@@ -1,8 +1,9 @@
-import { FC, ReactNode } from 'react';
+import { FC, Fragment, ReactNode } from 'react';
+import { Hyperlink } from '../elements/hyperlink';
 import { Tag } from '../elements/tag';
+import { Vendor } from '../entities/vendor';
 import { Icon } from '../identity/icon';
 import { BodyText } from '../identity/typography/body-text';
-import { Hyperlink } from '../elements/hyperlink';
 
 const urlRegex = new RegExp(
   /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/
@@ -58,13 +59,13 @@ type ItemProps = {
   region: string;
   body: string;
   categories: string[];
-  location?: string[];
+  address?: string[];
   hours: string[];
   options: string[];
   contact: string[];
 };
 
-const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hours, location, options, contact }) => (
+const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hours, address, options, contact }) => (
   <li className={styles.listing}>
     <img
       className={styles.img}
@@ -76,7 +77,7 @@ const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hour
         <h2 className={styles.vendor}>{title} </h2>
         <div className={styles.tags}>
           {tags.map((tag) => (
-            <Tag>{tag}</Tag>
+            <Tag key={tag}>{tag}</Tag>
           ))}
         </div>
         <h3 className={styles.region}>
@@ -90,10 +91,10 @@ const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hour
             <strong className={styles.key}>Kategorie</strong>
             <p className={styles.descripton}>
               {categories.map((el) => (
-                <>
+                <Fragment key={el}>
                   {el}
                   <br />
-                </>
+                </Fragment>
               ))}
             </p>
           </li>
@@ -101,25 +102,25 @@ const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hour
             <strong className={styles.key}>Zeiten</strong>
             <p className={styles.descripton}>
               {hours.map((el) => (
-                <>
+                <Fragment key={el}>
                   {el}
                   <br />
-                </>
+                </Fragment>
               ))}
             </p>
           </li>
         </ul>
       </div>
       <div className={styles.attributes}>
-        {location && (
+        {address && (
           <div className={styles.attribute}>
             <strong className={styles.key}>Ort</strong>
             <p className={styles.descripton}>
-              {location.map((el) => (
-                <>
+              {address.map((el) => (
+                <Fragment key={el}>
                   {el}
                   <br />
-                </>
+                </Fragment>
               ))}
             </p>
           </div>
@@ -128,10 +129,10 @@ const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hour
           <strong className={styles.key}>Bestellungen via</strong>
           <p className={styles.descripton}>
             {options.map((el) => (
-              <>
+              <Fragment key={el}>
                 {getLink(el)}
                 <br />
-              </>
+              </Fragment>
             ))}
           </p>
         </div>
@@ -139,10 +140,10 @@ const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hour
           <strong className={styles.key}>Kontakt</strong>
           <p className={styles.descripton}>
             {contact.map((el) => (
-              <>
+              <Fragment key={el}>
                 {getLink(el)}
                 <br />
-              </>
+              </Fragment>
             ))}
           </p>
         </div>
@@ -151,38 +152,29 @@ const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hour
   </li>
 );
 
-type Vendor = {
-  vendor: string;
-  category: string;
-  offer: string;
-  region: string;
-  type: string;
-  hours: string;
-  location: string;
-  order_options: string;
-  contact: string;
-};
-
 type Props = {
   vendors: Vendor[];
 };
 
 const toArray = (input: string) => input.split(',').map((el) => el.trim());
 
-export const VendorList: FC<Props> = ({ vendors }) => (
-  <ul>
-    {vendors.map(({ vendor, category, contact, hours, location, offer, order_options, region, type }) => (
-      <VendorItem
-        title={vendor}
-        region={region}
-        tags={toArray(type)}
-        body={offer}
-        categories={toArray(category)}
-        hours={toArray(hours)}
-        location={toArray(location)}
-        options={toArray(order_options)}
-        contact={toArray(contact)}
-      />
-    ))}
-  </ul>
-);
+export const VendorList: FC<Props> = ({ vendors }) => {
+  return (
+    <ul>
+      {vendors.map(({ vendor, _id, category, contact, hours, address, offer, order_options, region, type }) => (
+        <VendorItem
+          key={_id}
+          title={vendor}
+          region={region}
+          tags={toArray(type)}
+          body={offer}
+          categories={toArray(category)}
+          hours={toArray(hours)}
+          address={toArray(address)}
+          options={toArray(order_options)}
+          contact={toArray(contact)}
+        />
+      ))}
+    </ul>
+  );
+};
