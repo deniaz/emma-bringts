@@ -21,7 +21,7 @@ export default () => (
     <div className={styles.stage}>
       <div className={styles.body}>
         <h1 className={styles.display}>Emma bringts!</h1>
-        <Lead>In Zeiten von Corona und COVID-19 kaufen wir nicht mehr bei Tante Emma ein, sondern Emma bringts zu uns.</Lead>
+        <Lead>Emma entsteht gerade.</Lead>
       </div>
       <div className={styles.illustration}>
         <Illustration name="grandma" size={480} />
@@ -37,7 +37,7 @@ export default () => (
         </Link>
       }
     >
-      <Headline>Möchtest du mit deinem Unternehmen mitmachen?</Headline>
+      <Headline>Möchtest auch du zeigen, dass du aktuell lieferst?</Headline>
       <BodyText>Emma bringts! ist für alle gratis</BodyText>
     </Card>
   </Stacked>
