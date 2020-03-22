@@ -67,10 +67,10 @@ type ItemProps = {
 
 const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hours, address, options, contact }) => (
   <li className={styles.listing}>
-    <img
+    {/* <img
       className={styles.img}
       src="https://images.unsplash.com/photo-1532246420286-127bcd803104?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=240&h=180&q=60"
-    />
+    /> */}
 
     <div className={styles.col}>
       <div className={styles.body}>

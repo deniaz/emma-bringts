@@ -10,11 +10,11 @@ const styles = {
   zip: 'px-6 py-4 rounded-full',
 };
 
-type Props = { label: boolean };
+type Props = { label: boolean; zip?: string };
 
-export const SearchInput: FC<Props> = ({ label }) => {
+export const SearchInput: FC<Props> = ({ label, zip: initialZip = '' }) => {
   const [geo, setGeo] = useState<[number, number]>(null);
-  const [zip, setZip] = useState<string>('');
+  const [zip, setZip] = useState<string>(initialZip);
 
   useEffect(() => {
     const geocode = async (zip: string) => {
@@ -33,7 +33,12 @@ export const SearchInput: FC<Props> = ({ label }) => {
       {label && <span className={styles.label}>Suche in der Nähe deiner PLZ</span>}
       <div className={styles.input}>
         <input
-          onChange={(e) => setZip(e.target.value)}
+          value={zip}
+          autoComplete="off"
+          onChange={(e) => {
+            e.preventDefault();
+            setZip(e.target.value);
+          }}
           required
           className={styles.zip}
           name="zip"
@@ -42,7 +47,7 @@ export const SearchInput: FC<Props> = ({ label }) => {
           minLength={4}
           placeholder="8000"
         />
-        <Link href={geo === null ? '' : `/suche?lat=${geo[0]}&lng=${geo[1]}`} passHref>
+        <Link href={geo === null ? '' : `/suche?lat=${geo[0]}&lng=${geo[1]}&zip=${zip}`} passHref>
           <Button disabled={geo === null} type="link">
             Finden
           </Button>
