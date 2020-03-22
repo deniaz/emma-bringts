@@ -26,7 +26,9 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const lat = parseFloat(query['lat'].toString());
   const lng = parseFloat(query['lng'].toString());
 
-  const client = new MongoClient(process.env.MONGODB_HOST, { useUnifiedTopology: true });
+  console.info(process.env.MONGO_DB_HOST);
+
+  const client = new MongoClient(process.env.MONGO_DB_HOST, { useUnifiedTopology: true });
 
   await client.connect();
 

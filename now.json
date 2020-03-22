@@ -1,10 +1,11 @@
 {
   "env": {
-    "OPENCAGEDATA_API_KEY": "@opencagedata_api_key"
+    "OPENCAGEDATA_API_KEY": "@opencagedata_api_key",
+    "MONGO_DB_HOST": "@mongo_db_host"
   },
   "build": {
     "env": {
-      "MONGODB_HOST": "@mongodb_host"
+      "MONGO_DB_HOST": "@mongo_db_host"
     }
   }
 }
