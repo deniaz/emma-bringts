@@ -7,16 +7,17 @@ const styles = { form: 'flex flex-row justify-center' };
 type Props = {
   className?: string;
   label?: boolean;
+  zip?: string;
 };
 
-export const Search: FC<Props> = ({ className, label = false }) => {
+export const Search: FC<Props> = ({ className, zip, label = false }) => {
   const [type, setType] = useState<'delivery' | 'takeaway'>('delivery');
 
   return (
     <form className={[className, styles.form].filter(Boolean).join(' ')}>
       <Toggle active={type} onChange={(fresh) => setType(fresh)} />
 
-      <SearchInput label={label} />
+      <SearchInput zip={zip} label={label} />
     </form>
   );
 };

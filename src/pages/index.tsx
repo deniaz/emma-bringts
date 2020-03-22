@@ -1,3 +1,5 @@
+import Head from 'next/head';
+import Link from 'next/link';
 import { Card } from '../components/card';
 import { Search } from '../components/search';
 import { Button } from '../elements/button';
@@ -6,7 +8,6 @@ import { BodyText } from '../identity/typography/body-text';
 import { Headline } from '../identity/typography/headline';
 import { Lead } from '../identity/typography/lead';
 import { Stacked } from '../layout/stacked';
-import Link from 'next/link';
 
 const styles = {
   display: 'font-logo text-indigo-500 text-6xl',
@@ -18,10 +19,17 @@ const styles = {
 
 export default () => (
   <Stacked>
+    <Head>
+      <title>Emma bringts!</title>
+    </Head>
     <div className={styles.stage}>
       <div className={styles.body}>
         <h1 className={styles.display}>Emma bringts!</h1>
-        <Lead>Emma entsteht gerade.</Lead>
+        <Lead>
+          Dank Covid-19 kaufen wir nicht mehr bei Tante Emma ein, sondern Emma bringts. emmabringts.ch ist ein
+          Onlineverzeichnis von Einzelhändlern und Kleinlieferannt*Innen, die neu auf Liefer- und Takeawayservice angewiesen
+          sind.
+        </Lead>
       </div>
       <div className={styles.illustration}>
         <Illustration name="grandma" size={480} />

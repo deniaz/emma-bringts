@@ -7,6 +7,8 @@ const styles = {
 
 export const Footer: FC = () => (
   <footer className={styles.container}>
-    <p className={styles.message}>asdfasdf</p>
+    <p className={styles.message}>
+      Emma bringts! Ein Verzeichnis von Einzelhändlern, die neu einen Liefer- oder Takeaway-Service bieten.
+    </p>
   </footer>
 );
