@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 
 export default async ({ query }: NextApiRequest, res: NextApiResponse) => {
   const key = process.env.OPENCAGEDATA_API_KEY;
-  console.info(key);
+
   const zip = query['zip'].toString();
 
   if (!zip) {
