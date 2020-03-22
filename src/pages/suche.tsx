@@ -5,6 +5,7 @@ import { VendorList } from '../compositions/vendor-list';
 import { Vendor } from '../entities/vendor';
 import { Headline } from '../identity/typography/headline';
 import { Stacked } from '../layout/stacked';
+import { getAll, getByGeo } from '../repositories/shops';
 
 type Props = {
   vendors: Vendor[];
@@ -23,28 +24,16 @@ export default ({ vendors }: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const lat = parseFloat(query['lat'].toString());
-  const lng = parseFloat(query['lng'].toString());
-
   const client = new MongoClient(process.env.MONGO_DB_HOST, { useUnifiedTopology: true });
-
   await client.connect();
 
-  const db = client.db('shops');
-  const collection = db.collection<Vendor>('shops');
-  const docs = await collection
-    .find({
-      location: {
-        $near: {
-          $geometry: {
-            type: 'Point',
-            coordinates: [lat, lng],
-            $maxDistance: 20000,
-          },
-        },
-      },
-    })
-    .toArray();
+  if (query['lat'] && query['lng']) {
+    const lat = parseFloat(query['lat'].toString());
+    const lng = parseFloat(query['lng'].toString());
+    const vendors = await getByGeo(client, lat, lng);
+    return { props: { vendors } };
+  }
 
-  return { props: { vendors: JSON.parse(JSON.stringify(docs)) } };
+  const vendors = await getAll(client);
+  return { props: { vendors } };
 };
