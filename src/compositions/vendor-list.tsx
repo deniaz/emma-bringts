@@ -33,10 +33,10 @@ const getLink = (el: string): ReactNode => {
 const styles = {
   listing: 'rounded-md p-8 flex flex-row bg-white mb-4 shadow-sm box-border',
   img: 'rounded-md mr-8 h-full flex flex-shrink-0',
-  vendor: 'text-indigo-900 text-lg font-medium',
+  vendor: 'font-sans text-indigo-900 text-lg font-medium',
   category: '',
-  offer: 'break-word mt-2 mb-8 flex-grow-0',
-  region: 'text-gray-500 fill-current text-base font-light tracking-tight inline-flex flex-row items-center',
+  offer: 'font-sans break-word mt-2 mb-8 flex-grow-0',
+  region: 'font-sans text-gray-500 fill-current text-base font-light tracking-tight inline-flex flex-row items-center',
   regionIcon: 'mr-2',
   tags: 'my-2 flex flex-wrap',
 
@@ -45,11 +45,11 @@ const styles = {
   attributes: 'flex-col w-1/2 ml-8 box-border',
 
   infos: 'flex flex-row',
-  infoBox: 'w-1/2',
+  infoBox: 'font-sans w-1/2',
 
   attribute: '',
-  key: 'font-medium text-sm text-gray-500',
-  descripton: 'font-medium text-base text-gray-700 break-all mb-4',
+  key: 'font-sans font-medium text-sm text-gray-500',
+  descripton: 'font-sans font-medium text-base text-gray-700 break-all mb-4',
 };
 
 type ItemProps = {

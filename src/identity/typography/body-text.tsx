@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 
 const styles = {
-  text: 'text-indigo-900 text-base font-light',
+  text: 'font-sans text-indigo-900 text-base font-light',
 };
 
 type Props = {

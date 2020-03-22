@@ -3,7 +3,7 @@ import { Icon } from '../identity/icon';
 
 const styles = {
   container: 'rounded-full bg-indigo-100 px-2 py-2 mx-2 self-end inline-flex',
-  button: 'rounded-full px-8 py-4 flex-row fill-current inline-flex',
+  button: 'font-sans rounded-full px-8 py-4 flex-row fill-current inline-flex',
   inactive: 'text-indigo-500',
   active: 'bg-white text-black',
   icon: 'mr-3',

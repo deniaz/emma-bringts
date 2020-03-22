@@ -2,7 +2,7 @@ import { FC, MouseEvent, ReactNode } from 'react';
 
 const styles = {
   button:
-    'px-6 py-4 bg-indigo-500 rounded-full text-white hover:bg-indigo-600 focus:bg-indigo-700 transition-colors duration-200 ease-in-out',
+    'font-sans px-6 py-4 bg-indigo-500 rounded-full text-white hover:bg-indigo-600 focus:bg-indigo-700 transition-colors duration-200 ease-in-out',
 };
 
 type Props = {

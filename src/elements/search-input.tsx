@@ -4,8 +4,8 @@ import Link from 'next/link';
 
 const styles = {
   container: 'inline-flex self-end relative flex-col mx-2',
-  label: 'text-gray-800 font-medium text-sm ml-8 mb-2',
-  input: 'bg-white p-2 self-center rounded-full',
+  label: 'font-sans text-gray-800 font-medium text-sm ml-8 mb-2',
+  input: 'font-sans bg-white p-2 self-center rounded-full',
   // term: 'rounded-tl-full rounded-bl-full px-6 py-4 w-1/2',
   zip: 'px-6 py-4 rounded-full',
 };
