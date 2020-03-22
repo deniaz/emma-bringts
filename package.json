@@ -18,17 +18,22 @@
     "@fullhuman/postcss-purgecss": "^2.1.0",
     "autoprefixer": "^9.7.4",
     "gqless": "0.0.1-alpha.27",
+    "mongodb": "^3.5.5",
     "next": "^9.3.1",
+    "node-fetch": "^2.6.0",
     "postcss-import": "^12.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "swr": "^0.1.18",
     "tailwindcss": "^1.2.0",
     "xstate": "^4.8.0"
   },
   "devDependencies": {
     "@gqless/cli": "0.0.1-alpha.30",
     "@smartive/prettier-config": "^2.0.1",
+    "@types/mongodb": "^3.5.2",
     "@types/node": "^13.9.2",
+    "@types/node-fetch": "^2.5.5",
     "@types/react": "^16.9.25",
     "prettier": "^2.0.0",
     "typescript": "^3.8.3"

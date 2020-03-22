@@ -1,0 +1,10 @@
+{
+  "env": {
+    "OPENCAGEDATA_API_KEY": "@opencagedata_api_key"
+  },
+  "build": {
+    "env": {
+      "MONGODB_HOST": "@mongodb_host"
+    }
+  }
+}
