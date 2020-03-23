@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 
 const API_KEY = process.env.OPENCAGEDATA_API_KEY;
 
-const file = './data/zueri-markt_20200322-2229.csv';
+const file = './data/zueri-markt_20200323-2126.csv';
 
 (async function () {
   const data = await converter().fromFile(file);
@@ -19,10 +19,13 @@ const file = './data/zueri-markt_20200322-2229.csv';
       continue;
     }
 
-    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${address}`);
+    const response = await fetch(
+      `https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${encodeURIComponent(address)}`
+    );
 
     if (!response.ok) {
-      console.info(`failed ${shop.vendor}!`);
+      console.info(response.url);
+      console.info(`failed ${shop.vendor} (${response.status})!`);
       continue;
     }
 
