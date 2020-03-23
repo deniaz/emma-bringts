@@ -23,7 +23,7 @@ export default () => (
 
     <Card
       action={
-        <Link href="/registrieren" passHref>
+        <Link href="/mitmachen" passHref>
           <Button type="link">Mitmachen</Button>
         </Link>
       }

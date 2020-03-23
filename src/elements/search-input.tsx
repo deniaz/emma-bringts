@@ -17,6 +17,14 @@ export const SearchInput: FC<Props> = ({ label, zip: initialZip = '' }) => {
   const [zip, setZip] = useState<string>(initialZip);
 
   useEffect(() => {
+    navigator.geolocation.getCurrentPosition(async ({ coords: { latitude, longitude } }) => {
+      const response = await fetch(`/api/geocode?lat=${latitude}&lng=${longitude}`);
+      const { postcode } = await response.json();
+      setZip(postcode);
+    });
+  }, []);
+
+  useEffect(() => {
     const geocode = async (zip: string) => {
       const response = await fetch(`/api/geocode?zip=${zip}`);
       const { lat, lng } = await response.json();

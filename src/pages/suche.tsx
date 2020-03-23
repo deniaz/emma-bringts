@@ -21,7 +21,7 @@ export default ({ vendors, zip }: Props) => {
   return (
     <Stacked>
       <Head>
-        <title>Emma bringts! - {zip ? `Angebote in ${zip}` : 'Alle Angebote'}</title>
+        <title>{zip ? `Angebote in ${zip}` : 'Alle Angebote'} - Emma bringts!</title>
       </Head>
       <Search zip={zip} label={false} />
 
