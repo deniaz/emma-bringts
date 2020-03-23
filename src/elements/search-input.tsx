@@ -10,9 +10,9 @@ const styles = {
   input: 'px-6 py-4 rounded-full',
 };
 
-type Props = { label: boolean; zip?: string };
+type Props = { label: boolean; zip?: string; type: 'delivery' | 'takeaway' };
 
-export const SearchInput: FC<Props> = ({ label, zip: initialZip = '' }) => {
+export const SearchInput: FC<Props> = ({ label, type, zip: initialZip = '' }) => {
   const [geo, setGeo] = useState<[number, number]>(null);
   const [zip, setZip] = useState<string>(initialZip);
 
@@ -55,7 +55,7 @@ export const SearchInput: FC<Props> = ({ label, zip: initialZip = '' }) => {
           minLength={4}
           placeholder="8000"
         />
-        <Link href={geo === null ? '' : `/suche?lat=${geo[0]}&lng=${geo[1]}&zip=${zip}`} passHref>
+        <Link href={geo === null ? '' : `/suche?lat=${geo[0]}&lng=${geo[1]}&zip=${zip}&type=${type}`} passHref>
           <Button disabled={geo === null} type="link">
             Finden
           </Button>

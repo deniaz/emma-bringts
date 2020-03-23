@@ -9,14 +9,27 @@ const getByQuery = async (client: MongoClient, query: object) => {
   return JSON.parse(JSON.stringify(docs));
 };
 
-export const getAll = async (client: MongoClient) => {
-  const docs = await getByQuery(client, {});
+export const getAll = async (client: MongoClient, type: 'takeaway' | 'delivery') => {
+  const docs = await getByQuery(client, {
+    type: {
+      $in:
+        type === 'takeaway'
+          ? ['Abholung', 'Hofladen', 'Selbst ernten']
+          : ['Lieferung per Post', 'Lieferung per Velo / Auto'],
+    },
+  });
 
   return docs;
 };
 
-export const getByGeo = async (client: MongoClient, lat: number, lng: number) => {
+export const getByGeo = async (client: MongoClient, lat: number, lng: number, type: 'takeaway' | 'delivery') => {
   const docs = await getByQuery(client, {
+    type: {
+      $in:
+        type === 'takeaway'
+          ? ['Abholung', 'Hofladen', 'Selbst ernten']
+          : ['Lieferung per Post', 'Lieferung per Velo / Auto'],
+    },
     location: {
       $near: {
         $geometry: {

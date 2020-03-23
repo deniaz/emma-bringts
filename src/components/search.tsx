@@ -17,7 +17,7 @@ export const Search: FC<Props> = ({ className, zip, label = false }) => {
     <form className={[className, styles.form].filter(Boolean).join(' ')}>
       <Toggle active={type} onChange={(fresh) => setType(fresh)} />
 
-      <SearchInput zip={zip} label={label} />
+      <SearchInput type={type} zip={zip} label={label} />
     </form>
   );
 };

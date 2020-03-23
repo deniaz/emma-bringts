@@ -37,15 +37,16 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const client = new MongoClient(process.env.MONGO_DB_HOST, { useUnifiedTopology: true });
   await client.connect();
 
-  if (query['lat'] && query['lng'] && query['zip']) {
+  if (query['lat'] && query['lng'] && query['zip'] && query['type']) {
     const lat = parseFloat(query['lat'].toString());
     const lng = parseFloat(query['lng'].toString());
     const zip = query['zip'].toString();
+    const type = query['type'].toString() === 'delivery' ? 'delivery' : 'takeaway';
 
-    const vendors = await getByGeo(client, lat, lng);
+    const vendors = await getByGeo(client, lat, lng, type);
     return { props: { vendors, zip } };
   }
 
-  const vendors = await getAll(client);
+  const vendors = await getAll(client, 'takeaway');
   return { props: { vendors } };
 };
