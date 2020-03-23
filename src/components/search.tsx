@@ -8,10 +8,11 @@ type Props = {
   className?: string;
   label?: boolean;
   zip?: string;
+  type: 'takeaway' | 'delivery';
 };
 
-export const Search: FC<Props> = ({ className, zip, label = false }) => {
-  const [type, setType] = useState<'delivery' | 'takeaway'>('delivery');
+export const Search: FC<Props> = ({ className, zip, type: initialType, label = false }) => {
+  const [type, setType] = useState<'delivery' | 'takeaway'>(initialType);
 
   return (
     <form className={[className, styles.form].filter(Boolean).join(' ')}>

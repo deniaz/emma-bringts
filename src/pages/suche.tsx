@@ -15,15 +15,16 @@ const styles = {
 type Props = {
   vendors: Vendor[];
   zip?: string;
+  type?: string;
 };
 
-export default ({ vendors, zip }: Props) => {
+export default ({ vendors, zip, type }: Props) => {
   return (
     <Stacked>
       <Head>
         <title>{zip ? `Angebote in ${zip}` : 'Alle Angebote'} - Emma bringts!</title>
       </Head>
-      <Search zip={zip} label={false} />
+      <Search type={type === 'delivery' ? 'delivery' : 'takeaway'} zip={zip} label={false} />
 
       <header className={styles.header}>
         <Headline>Resultate{zip && ` in der Nähe ${zip}`}</Headline>
@@ -44,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     const type = query['type'].toString() === 'delivery' ? 'delivery' : 'takeaway';
 
     const vendors = await getByGeo(client, lat, lng, type);
-    return { props: { vendors, zip } };
+    return { props: { vendors, zip, type } };
   }
 
   const vendors = await getAll(client, 'takeaway');

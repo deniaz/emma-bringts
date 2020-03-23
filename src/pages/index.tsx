@@ -19,7 +19,7 @@ export default () => (
     </Head>
     <Intro />
 
-    <Search className={styles.search} label />
+    <Search type="takeaway" className={styles.search} label />
 
     <Card
       action={
