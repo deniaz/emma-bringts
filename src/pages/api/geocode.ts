@@ -25,8 +25,6 @@ export default async ({ query }: NextApiRequest, res: NextApiResponse) => {
     const lng = query['lng'].toString();
     const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?key=${key}&q=${lat}+${lng}`);
 
-    console.info(response);
-
     if (!response.ok) {
       res.statusCode = 404;
       res.end();
