@@ -32,21 +32,21 @@ const getLink = (el: string): ReactNode => {
 };
 
 const styles = {
-  listing: 'rounded-md p-8 flex flex-row bg-white mb-4 shadow-sm box-border',
+  listing: 'rounded-md p-8 flex flex-col lg:flex-row bg-white mb-4 shadow-sm box-border',
   img: 'rounded-md mr-8 h-full flex flex-shrink-0',
   vendor: 'font-sans text-indigo-900 text-lg font-medium',
   category: '',
   offer: 'font-sans break-word mt-2 mb-8 flex-grow-0',
   region: 'font-sans text-gray-500 fill-current text-base font-light tracking-tight inline-flex flex-row items-center',
-  regionIcon: 'mr-2',
+  regionIcon: 'mr-2 flex-shrink-0',
   tags: 'my-2 flex flex-wrap',
 
-  col: 'flex flex-row w-full box-border',
-  body: 'flex-col w-1/2',
-  attributes: 'flex-col w-1/2 ml-8 box-border',
+  col: 'flex flex-col lg:flex-row w-full box-border',
+  body: 'flex-col w-full lg:w-1/2',
+  attributes: 'flex-col w-full lg:w-1/2 lg:ml-8 box-border',
 
-  infos: 'flex flex-row',
-  infoBox: 'font-sans w-1/2',
+  infos: 'flex flex-col lg:flex-row',
+  infoBox: 'font-sans lg:w-1/2',
 
   attribute: '',
   key: 'font-sans font-medium text-sm text-gray-500',
@@ -81,7 +81,7 @@ const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hour
           ))}
         </div>
         <h3 className={styles.region}>
-          <Icon className={styles.regionIcon} name="place" size={16} /> {region}
+          <Icon className={styles.regionIcon} name="place" size={16} /> <span>{region}</span>
         </h3>
 
         <BodyText className={styles.offer}>{body}</BodyText>

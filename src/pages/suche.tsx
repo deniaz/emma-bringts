@@ -8,6 +8,10 @@ import { Headline } from '../identity/typography/headline';
 import { Stacked } from '../layout/stacked';
 import { getAll, getByGeo } from '../repositories/shops';
 
+const styles = {
+  header: 'px-4 box-border mt-4 lg:p-9 lg:m-0',
+};
+
 type Props = {
   vendors: Vendor[];
   zip?: string;
@@ -20,10 +24,11 @@ export default ({ vendors, zip }: Props) => {
         <title>Emma bringts! - {zip ? `Angebote in ${zip}` : 'Alle Angebote'}</title>
       </Head>
       <Search zip={zip} label={false} />
-      <div>
-        <Headline>Resultate{zip && `in der Nähe ${zip}`}</Headline>
-        <VendorList vendors={vendors} />
-      </div>
+
+      <header className={styles.header}>
+        <Headline>Resultate{zip && ` in der Nähe ${zip}`}</Headline>
+      </header>
+      <VendorList vendors={vendors} />
     </Stacked>
   );
 };
