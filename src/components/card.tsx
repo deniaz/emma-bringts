@@ -1,9 +1,9 @@
 import { FC, ReactNode } from 'react';
 
 const styles = {
-  container: 'bg-white mx-auto w-1/2 rounded-md p-8 flex-row flex',
-  body: 'pr-4',
-  button: 'flex-col justify-center flex',
+  container: 'bg-white mx-auto w-full lg:w-1/2 rounded-md p-8 flex-col lg:flex-row flex',
+  body: 'lg:pr-4 mb-10 lg:m-0',
+  button: 'mx-auto lg:flex-col lg:justify-center lg:flex',
 };
 
 type Props = {
