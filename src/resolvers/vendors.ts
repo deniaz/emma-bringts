@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import { Vendor } from '../entities/vendor';
 import { VendorInput } from '../schemas/graphql';
 import { getShopsCollection } from '../services/mongo';

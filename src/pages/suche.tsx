@@ -56,10 +56,14 @@ export default () => {
   }, [postcode]);
 
   const variables = useMemo(() => {
-    return {
-      service,
-      zip: zip && parseInt(zip, 10),
-    };
+    if (zip) {
+      return {
+        service,
+        zip: parseInt(zip, 10),
+      };
+    }
+
+    return { service };
   }, [zip, service]);
 
   const { data } = useSWR([getVendors, variables], fetcher);
