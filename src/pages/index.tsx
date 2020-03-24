@@ -12,7 +12,7 @@ import { Headline } from '../identity/typography/headline';
 import { Stacked } from '../layout/stacked';
 
 const styles = {
-  label: 'text-center text-sans',
+  label: 'text-center font-sans',
   search: 'py-4',
 };
 
