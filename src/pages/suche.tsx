@@ -1,5 +1,8 @@
 import { request } from 'graphql-request';
+import { Variables } from 'graphql-request/dist/src/types';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 import useSWR from 'swr';
 import { VendorList } from '../compositions/vendor-list';
 import { Headline } from '../identity/typography/headline';
@@ -9,29 +12,38 @@ const styles = {
   header: 'px-4 box-border mt-4 lg:p-9 lg:m-0',
 };
 
-const fetcher = (query: string) => request('/api/graphql', query);
+const fetcher = (query: string, variables?: Variables) => request('/api/graphql', query, variables);
+
+const getVendors = `query Vendors($service: [Service!], $zip: Int) {
+  vendors(filter: {service: $service, zip: $zip}) {
+    id
+    name
+    categories
+    body
+    region
+    service
+    hours
+    address
+    order
+    contact
+  }
+}`;
 
 export default () => {
-  // const { query } = useRouter();
+  const { query } = useRouter();
 
-  const gql = `{
-    vendors {
-      id
-      name
-      categories
-      body
-      region
-      service
-      hours
-      address
-      order
-      contact
-    }
-  }`;
+  const variables = useMemo(() => {
+    const services = query['services'] || 'TAKEAWAY';
+    const zip = query['zip'] && parseInt(query['zip'].toString(), 10);
 
-  const { data, error } = useSWR(gql, fetcher);
+    return {
+      zip,
+      service: Array.isArray(services) ? services : [services],
+    };
+  }, [query]);
 
-  console.info({ data, error });
+  const { data } = useSWR([getVendors, variables], fetcher);
+
   return (
     <Stacked>
       <Head>
@@ -46,21 +58,3 @@ export default () => {
     </Stacked>
   );
 };
-
-// export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-//   const client = new MongoClient(process.env.MONGO_DB_HOST, { useUnifiedTopology: true });
-//   await client.connect();
-
-//   if (query['lat'] && query['lng'] && query['zip'] && query['type']) {
-//     const lat = parseFloat(query['lat'].toString());
-//     const lng = parseFloat(query['lng'].toString());
-//     const zip = query['zip'].toString();
-//     const type = query['type'].toString() === 'delivery' ? 'delivery' : 'takeaway';
-
-//     const vendors = await getByGeo(client, lat, lng, type);
-//     return { props: { vendors, zip, type } };
-//   }
-
-//   const vendors = await getAll(client, 'takeaway');
-//   return { props: { vendors } };
-// };
