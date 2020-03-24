@@ -7,6 +7,50 @@ const API_KEY = process.env.OPENCAGEDATA_API_KEY;
 
 const file = './data/zueri-markt_20200323-2126.csv';
 
+const isValidService = (service) =>
+  ['Abholung', 'Lieferung per Post', 'Lieferung per Velo / Auto', 'Selbst ernten'].includes(service);
+
+const toService = (service) => {
+  switch (service) {
+    case 'Abholung':
+      return 'TAKEAWAY';
+    case 'Lieferung per Post':
+      return 'DELIVERY_MAIL';
+    case 'Lieferung per Velo / Auto':
+      return 'DELIVERY';
+    case 'Selbst ernten':
+      return 'SELF_SERVICE';
+  }
+};
+
+const isValidOrder = (order) => ['Telefon', 'E-Mail', 'Webseite'].includes(order);
+
+const toOrder = (order) => {
+  switch (order) {
+    case 'Telefon':
+      return 'PHONE';
+    case 'E-Mail':
+      return 'EMAIL';
+    case 'Webseite':
+      return 'WEBSITE';
+  }
+};
+
+const trim = (text) => text.trim();
+const toArray = (text) => text.split(',');
+
+const mapVendor = (doc) => ({
+  name: doc.vendor,
+  service: toArray(doc.type).filter(isValidService).map(toService),
+  body: doc.offer,
+  address: toArray(doc.address),
+  categories: toArray(doc.category).map(trim),
+  contact: toArray(doc.contact),
+  hours: toArray(doc.hours).map(trim),
+  order: toArray(doc.order_options).filter(isValidOrder).map(toOrder),
+  region: doc.region,
+});
+
 (async function () {
   const data = await converter().fromFile(file);
   let enriched = [];
@@ -40,7 +84,7 @@ const file = './data/zueri-markt_20200323-2126.csv';
     const { lat, lng } = first.geometry;
 
     const geo = enriched.push({
-      ...shop,
+      ...mapVendor(shop),
       location: {
         type: 'Point',
         coordinates: [lat, lng],
@@ -56,5 +100,6 @@ const file = './data/zueri-markt_20200323-2126.csv';
 
   console.info(`succeeded for ${enriched.length} shops`);
 
+  console.log(enriched);
   process.exit(0);
 })();

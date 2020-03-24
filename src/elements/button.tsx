@@ -15,7 +15,8 @@ type Props = {
 };
 
 export const Button = forwardRef<HTMLElement, Props>(
-  ({ children, onClick, href, disabled = false, type = 'button' }, ref) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ({ children, onClick, href, disabled = false, type = 'button' }, _ref) => {
     if (type === 'link') {
       return (
         <a href={href} className={[styles.button, disabled ? styles.disabled : styles.enabled].join(' ')}>
