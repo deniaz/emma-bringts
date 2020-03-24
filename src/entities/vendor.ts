@@ -1,4 +1,4 @@
-export type Vendor = {
+export type MongoVendor = {
   _id: string;
   vendor: string;
   category: string;
@@ -9,4 +9,21 @@ export type Vendor = {
   address: string;
   order_options: string;
   contact: string;
+};
+
+export type Service = 'TAKEAWAY' | 'DELIVERY_MAIL' | 'DELIVERY' | 'SELF_SERVICE';
+
+export type Order = 'PHONE' | 'EMAIL' | 'WEBSITE';
+
+export type Vendor = {
+  id: string;
+  name: string;
+  categories: string[];
+  body: string;
+  region: string;
+  service: Service[];
+  hours: string[];
+  address: string[];
+  order: Order[];
+  contact: string[];
 };

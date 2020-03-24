@@ -14,25 +14,23 @@ type Props = {
   disabled?: boolean;
 };
 
-export const Button = forwardRef<HTMLElement, Props>(
-  ({ children, onClick, href, disabled = false, type = 'button' }, ref) => {
-    if (type === 'link') {
-      return (
-        <a href={href} className={[styles.button, disabled ? styles.disabled : styles.enabled].join(' ')}>
-          {children}
-        </a>
-      );
-    }
-
+export const Button = forwardRef<HTMLElement, Props>(({ children, onClick, href, disabled = false, type = 'button' }) => {
+  if (type === 'link') {
     return (
-      <button
-        disabled={disabled}
-        className={[styles.button, disabled ? styles.disabled : styles.enabled].join(' ')}
-        onClick={onClick}
-        type={type}
-      >
+      <a href={href} className={[styles.button, disabled ? styles.disabled : styles.enabled].join(' ')}>
         {children}
-      </button>
+      </a>
     );
   }
-);
+
+  return (
+    <button
+      disabled={disabled}
+      className={[styles.button, disabled ? styles.disabled : styles.enabled].join(' ')}
+      onClick={onClick}
+      type={type}
+    >
+      {children}
+    </button>
+  );
+});

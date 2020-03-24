@@ -156,23 +156,21 @@ type Props = {
   vendors: Vendor[];
 };
 
-const toArray = (input: string) => input.split(',').map((el) => el.trim());
-
 export const VendorList: FC<Props> = ({ vendors }) => {
   return (
     <ul>
-      {vendors.map(({ vendor, _id, category, contact, hours, address, offer, order_options, region, type }) => (
+      {vendors.map(({ name, id, categories, contact, hours, address, body, order, region, service }) => (
         <VendorItem
-          key={_id}
-          title={vendor}
+          key={id}
+          title={name}
           region={region}
-          tags={toArray(type)}
-          body={offer}
-          categories={toArray(category)}
-          hours={toArray(hours)}
-          address={toArray(address)}
-          options={toArray(order_options)}
-          contact={toArray(contact)}
+          tags={service}
+          body={body}
+          categories={categories}
+          hours={hours}
+          address={address}
+          options={order}
+          contact={contact}
         />
       ))}
     </ul>

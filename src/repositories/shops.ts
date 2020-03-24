@@ -1,9 +1,9 @@
 import { MongoClient } from 'mongodb';
-import { Vendor } from '../entities/vendor';
+import { MongoVendor } from '../entities/vendor';
 
 const getByQuery = async (client: MongoClient, query: object) => {
   const db = client.db('shops');
-  const collection = db.collection<Vendor>('shops');
+  const collection = db.collection<MongoVendor>('shops');
   const docs = await collection.find(query).toArray();
 
   return JSON.parse(JSON.stringify(docs));
