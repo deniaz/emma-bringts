@@ -2,18 +2,11 @@ import { request } from 'graphql-request';
 import Head from 'next/head';
 import useSWR from 'swr';
 import { VendorList } from '../compositions/vendor-list';
-import { MongoVendor } from '../entities/vendor';
 import { Headline } from '../identity/typography/headline';
 import { Stacked } from '../layout/stacked';
 
 const styles = {
   header: 'px-4 box-border mt-4 lg:p-9 lg:m-0',
-};
-
-type Props = {
-  vendors: MongoVendor[];
-  zip?: string;
-  type?: string;
 };
 
 const fetcher = (query: string) => request('/api/graphql', query);
