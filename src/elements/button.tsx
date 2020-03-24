@@ -14,23 +14,26 @@ type Props = {
   disabled?: boolean;
 };
 
-export const Button = forwardRef<HTMLElement, Props>(({ children, onClick, href, disabled = false, type = 'button' }) => {
-  if (type === 'link') {
+export const Button = forwardRef<HTMLElement, Props>(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  ({ children, onClick, href, disabled = false, type = 'button' }, _ref) => {
+    if (type === 'link') {
+      return (
+        <a href={href} className={[styles.button, disabled ? styles.disabled : styles.enabled].join(' ')}>
+          {children}
+        </a>
+      );
+    }
+
     return (
-      <a href={href} className={[styles.button, disabled ? styles.disabled : styles.enabled].join(' ')}>
+      <button
+        disabled={disabled}
+        className={[styles.button, disabled ? styles.disabled : styles.enabled].join(' ')}
+        onClick={onClick}
+        type={type}
+      >
         {children}
-      </a>
+      </button>
     );
   }
-
-  return (
-    <button
-      disabled={disabled}
-      className={[styles.button, disabled ? styles.disabled : styles.enabled].join(' ')}
-      onClick={onClick}
-      type={type}
-    >
-      {children}
-    </button>
-  );
-});
+);

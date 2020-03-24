@@ -11,11 +11,11 @@ const styles = {
 
 const cn = (classes: string[]) => classes.filter(Boolean).join(' ');
 
-type Option = 'delivery' | 'takeaway';
+export type ToggleOption = 'DELIVERY' | 'TAKEAWAY';
 
 type Props = {
-  active: Option;
-  onChange: (selected: Option) => void;
+  active: ToggleOption;
+  onChange: (selected: ToggleOption) => void;
 };
 
 export const Toggle: FC<Props> = ({ onChange, active }) => (
@@ -23,18 +23,18 @@ export const Toggle: FC<Props> = ({ onChange, active }) => (
     <button
       onClick={(e) => {
         e.preventDefault();
-        onChange('takeaway');
+        onChange('TAKEAWAY');
       }}
-      className={cn([styles.button, active === 'takeaway' ? styles.active : styles.inactive])}
+      className={cn([styles.button, active === 'TAKEAWAY' ? styles.active : styles.inactive])}
     >
       <Icon className={styles.icon} size={24} name="hiking" /> Abholung
     </button>
     <button
       onClick={(e) => {
         e.preventDefault();
-        onChange('delivery');
+        onChange('DELIVERY');
       }}
-      className={cn([styles.button, active === 'delivery' ? styles.active : styles.inactive])}
+      className={cn([styles.button, active === 'DELIVERY' ? styles.active : styles.inactive])}
     >
       <Icon className={styles.icon} size={24} name="scooter" /> Lieferung
     </button>
