@@ -48,6 +48,24 @@ export const schema = buildSchema(`
     tenant: String!
   }
 
+  input VendorInput {
+    name: String!
+    categories: [String]!
+    body: String
+    region: String
+    service: [Service]!
+    hours: [String]!
+    address: [String]!
+    order: [Order]!
+    contact: [String]!
+  }
+
+
+
+  type Mutation {
+    create(vendor: VendorInput!): Vendor!
+  }
+
   type Query {
     vendors(filter: VendorFilterInput): [Vendor]!
   }
