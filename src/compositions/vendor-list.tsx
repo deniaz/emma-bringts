@@ -34,10 +34,11 @@ const getLink = (el: string): ReactNode => {
 const styles = {
   listing: 'rounded-md p-8 flex flex-col lg:flex-row bg-white mb-4 shadow-sm box-border',
   img: 'rounded-md mr-8 h-full flex flex-shrink-0',
+  categories: 'font-sans text-indigo-500 font-medium',
   vendor: 'font-sans text-indigo-900 text-lg font-medium',
   category: '',
   offer: 'font-sans break-word mt-2 mb-8 flex-grow-0',
-  region: 'font-sans text-gray-500 fill-current text-base font-light tracking-tight inline-flex flex-row items-center',
+  region: 'font-sans text-gray-500 fill-current text-base font-light tracking-tight inline-flex flex-row items-center mb-4',
   regionIcon: 'mr-2 flex-shrink-0',
   tags: 'my-2 flex flex-wrap',
 
@@ -74,30 +75,15 @@ const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hour
 
     <div className={styles.col}>
       <div className={styles.body}>
-        <h2 className={styles.vendor}>{title} </h2>
+        <h3 className={styles.categories}>{categories.join(', ')}</h3>
+        <h2 className={styles.vendor}>{title}</h2>
         <div className={styles.tags}>
           {tags.map((tag) => (
             <Tag key={tag}>{tag}</Tag>
           ))}
         </div>
-        <h3 className={styles.region}>
-          <Icon className={styles.regionIcon} name="place" size={16} /> <span>{region}</span>
-        </h3>
-
-        <BodyText className={styles.offer}>{body}</BodyText>
 
         <ul className={styles.infos}>
-          <li className={styles.infoBox}>
-            <strong className={styles.key}>Kategorie</strong>
-            <p className={styles.descripton}>
-              {categories.map((el) => (
-                <Fragment key={el}>
-                  {el}
-                  <br />
-                </Fragment>
-              ))}
-            </p>
-          </li>
           <li className={styles.infoBox}>
             <strong className={styles.key}>Zeiten</strong>
             <p className={styles.descripton}>
@@ -110,8 +96,14 @@ const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hour
             </p>
           </li>
         </ul>
+
+        <BodyText className={styles.offer}>{body}</BodyText>
       </div>
       <div className={styles.attributes}>
+        <h3 className={styles.region}>
+          <Icon className={styles.regionIcon} name="place" size={16} /> <span>{region}</span>
+        </h3>
+
         {address && (
           <div className={styles.attribute}>
             <strong className={styles.key}>Ort</strong>
