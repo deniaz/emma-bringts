@@ -4,12 +4,13 @@ import { Vendor as VendorType } from '../entities/vendor';
 
 type Props = {
   vendors: VendorType[];
+  userCoordinates?: number[];
 };
 
-export const VendorList: FC<Props> = ({ vendors }) => {
+export const VendorList: FC<Props> = ({ vendors, userCoordinates }) => {
   return (
     <ul>
-      {vendors.map(({ name, id, categories, contact, hours, address, body, order, region, service }) => (
+      {vendors.map(({ name, id, categories, contact, hours, address, body, order, region, service, location }) => (
         <Vendor
           key={id}
           title={name}
@@ -21,6 +22,8 @@ export const VendorList: FC<Props> = ({ vendors }) => {
           address={address}
           options={order}
           contact={contact}
+          coordinates={location && location.coordinates}
+          userCoordinates={userCoordinates}
         />
       ))}
     </ul>

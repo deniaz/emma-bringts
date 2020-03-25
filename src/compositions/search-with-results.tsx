@@ -29,6 +29,9 @@ const getVendors = `query Vendors($service: [Service!], $zip: Int, $tenants: [Te
     address
     order
     contact
+    location {
+      coordinates
+    }
   }
   total
 }`;
@@ -45,7 +48,7 @@ export const SearchWithResults: FC<Props> = ({ query, categories }) => {
   const [zip, setZip] = useState<string>('');
   const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
 
-  const [, postcode] = useGetCurrentPosition();
+  const [userCoordinates, postcode] = useGetCurrentPosition();
 
   useEffect(() => {
     if (query['zip']) {
@@ -91,7 +94,7 @@ export const SearchWithResults: FC<Props> = ({ query, categories }) => {
 
       const { vendors } = data;
 
-      return vendors.map(({ name, id, categories, contact, hours, address, body, order, region, service }) => (
+      return vendors.map(({ name, id, categories, contact, hours, address, body, order, region, service, location }) => (
         <Vendor
           key={id}
           title={name}
@@ -103,6 +106,8 @@ export const SearchWithResults: FC<Props> = ({ query, categories }) => {
           address={address}
           options={order}
           contact={contact}
+          coordinates={location && location.coordinates}
+          userCoordinates={userCoordinates}
         />
       ));
     },
