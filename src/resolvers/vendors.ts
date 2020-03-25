@@ -5,12 +5,18 @@ import { getShopsCollection } from '../services/mongo';
 
 const key = process.env.OPENCAGEDATA_API_KEY;
 
-const buildQuery = async ({ service, zip }: VendorInput['filter']) => {
+const buildQuery = async ({ service, tenants, zip }: VendorInput['filter']) => {
   const criteria = {};
 
   if (service) {
     criteria['service'] = {
       $in: service,
+    };
+  }
+
+  if (tenants) {
+    criteria['tenant'] = {
+      $in: tenants,
     };
   }
 
