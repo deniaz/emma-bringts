@@ -71,11 +71,10 @@ export default () => {
     return params;
   }, [zip, service, tenants]);
 
-  console.log(variables);
   const { data } = useSWR([getVendors, variables], fetcher);
 
   return (
-    <Stacked>
+    <Stacked fullPage={!query['iframe']}>
       <Head>
         <title>Alle Angebote - Emma bringts!</title>
       </Head>
