@@ -85,7 +85,7 @@ export type IconProps = {
 export const Icon: FC<IconProps> = ({ name, className = '', size = 32 }) => {
   if (!iconMap[name]) {
     // eslint-disable-next-line no-console
-    console.warn(`No Icon with name 'name' found!`);
+    console.warn(`No Icon with name ${name} found!`);
     return null;
   }
 
