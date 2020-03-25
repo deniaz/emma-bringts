@@ -69,7 +69,7 @@ const buildInsert = async (vendor: Vendor): Promise<Omit<MongoVendor, '_id'>> =>
 };
 
 export const vendors = {
-  create: async ({ vendor }: { vendor: Vendor }): Promise<Vendor> => {
+  createVendor: async ({ vendor }: { vendor: Vendor }): Promise<Vendor> => {
     const insertion = await buildInsert(vendor);
 
     const collection = await getShopsCollection();

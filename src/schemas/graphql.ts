@@ -63,7 +63,7 @@ export const schema = buildSchema(`
 
 
   type Mutation {
-    create(vendor: VendorInput!): Vendor!
+    createVendor(vendor: VendorInput!): Vendor!
   }
 
   type Query {

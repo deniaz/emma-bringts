@@ -15,7 +15,7 @@ type A =
       type: 'update';
       target: Targetable;
     }
-  | { type: 'region_change'; region: string };
+  | { type: 'list_change'; name: string; value: string };
 
 const isCheckbox = (element: Targetable): element is HTMLInputElement => element.type === 'checkbox';
 
@@ -27,12 +27,12 @@ function reduce<S>(state: S, action: A): S {
     };
   }
 
-  if (action.type === 'region_change') {
+  if (action.type === 'list_change') {
     return {
       ...state,
-      regions: state['regions'].includes(action.region)
-        ? state['regions'].filter((region) => region !== action.region)
-        : [...state['regions'], action.region],
+      [action.name]: state[action.name].includes(action.value)
+        ? state[action.name].filter((item) => item !== action.value)
+        : [...state[action.name], action.value],
     };
   }
 
@@ -53,6 +53,7 @@ export default () => {
   const initial = {
     vendor: '',
     description: '',
+    categories: [],
     veggies: false,
     dairies: false,
     meat: false,
@@ -76,7 +77,7 @@ export default () => {
     street: '',
     zip: '',
     locality: '',
-    regions: [],
+    region: [],
   };
 
   const [form, dispatch] = useReducer<Reducer<typeof initial>>(reduce, initial);
@@ -91,10 +92,11 @@ export default () => {
     });
   }
 
-  function handleRegionChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleListChange(e: ChangeEvent<HTMLInputElement>) {
     dispatch({
-      type: 'region_change',
-      region: e.target.value,
+      type: 'list_change',
+      name: e.target.name,
+      value: e.target.value,
     });
   }
 
@@ -103,7 +105,7 @@ export default () => {
 
     try {
       const mutation = `mutation Vendor($vendor: VendorInput!) {
-        create(vendor: $vendor) {
+        createVendor(vendor: $vendor) {
           id
           name
           categories
@@ -120,15 +122,8 @@ export default () => {
       const variables = {
         vendor: {
           name: form.vendor,
-          region: form.regions.join(', '),
-          categories: [
-            form.veggies && 'veggies',
-            form.dairies && 'dairies',
-            form.meat && 'meat',
-            form.pastries && 'pastries',
-            form.staple && 'staple',
-            form.meals && 'meals',
-          ].filter(Boolean),
+          region: form.region.join(', '),
+          categories: form.categories,
           body: form.description,
           service: [
             form.DELIVERY && 'DELIVERY',
@@ -145,9 +140,9 @@ export default () => {
         },
       };
 
-      const { create } = await request<{ create: Vendor }>('/api/graphql', mutation, variables);
+      const { createVendor } = await request<{ createVendor: Vendor }>('/api/graphql', mutation, variables);
       setStatus('success');
-      setVendor(create);
+      setVendor(createVendor);
     } catch (error) {
       setStatus('error');
     }
@@ -157,6 +152,30 @@ export default () => {
     e.preventDefault();
     submit();
   }
+
+  const categories = [
+    'Gemüse / Früchte',
+    'Molkereiprodukte',
+    'Fleischwaren',
+    'Backwaren',
+    'Grundnahrungsmittel (Reis, Pasta, ...)',
+    'Menüs',
+  ];
+
+  const regions = [
+    'Zürich (Stadt)',
+    'Affoltern',
+    'Andelfingen',
+    'Bülach',
+    'Dielsdorf',
+    'Dietikon',
+    'Hinwil',
+    'Horgen',
+    'Meilen',
+    'Pfäffikon',
+    'Uster',
+    'Winterthur',
+  ];
 
   return (
     <Stacked>
@@ -177,40 +196,14 @@ export default () => {
           <Input name="vendor" onChange={handleChange} label="Anbieter" value={form.vendor} type="text" />
           <Textarea onChange={handleChange} name="description" label="Beschreibe deine Angebote" value={form.description} />
           <Selection
-            onChange={handleChange}
+            onChange={handleListChange}
             label="Angebotskategorie"
-            options={[
-              {
-                name: 'veggies',
-                label: 'Gemüse / Früchte',
-                checked: form.veggies,
-              },
-              {
-                name: 'dairies',
-                label: 'Molkereiprodukte',
-                checked: form.dairies,
-              },
-              {
-                name: 'meat',
-                label: 'Fleischwaren',
-                checked: form.meat,
-              },
-              {
-                name: 'pastries',
-                label: 'Backwaren',
-                checked: form.pastries,
-              },
-              {
-                name: 'staple',
-                label: 'Grundnahrungsmittel (Reis, Pasta, ...)',
-                checked: form.staple,
-              },
-              {
-                name: 'meals',
-                label: 'Menüs',
-                checked: form.meals,
-              },
-            ]}
+            options={categories.map((category) => ({
+              label: category,
+              value: category,
+              name: 'categories',
+              checked: form.categories.includes(category),
+            }))}
           />
 
           <h3 className={styles.title}>Bestellungen</h3>
@@ -242,82 +235,14 @@ export default () => {
             ]}
           />
           <Selection
-            onChange={handleRegionChange}
+            onChange={handleListChange}
             label="Region"
-            options={[
-              {
-                label: 'Zürich (Stadt)',
-                value: 'Zürich (Stadt)',
-                name: 'region',
-                checked: form.regions.includes('Zürich (Stadt)'),
-              },
-              {
-                label: 'Affoltern',
-                value: 'Affoltern',
-                name: 'region',
-                checked: form.regions.includes('Affoltern'),
-              },
-              {
-                label: 'Andelfingen',
-                value: 'Andelfingen',
-                name: 'region',
-                checked: form.regions.includes('Andelfingen'),
-              },
-              {
-                label: 'Bülach',
-                value: 'Bülach',
-                name: 'region',
-                checked: form.regions.includes('Bülach'),
-              },
-              {
-                label: 'Dielsdorf',
-                value: 'Dielsdorf',
-                name: 'region',
-                checked: form.regions.includes('Dielsdorf'),
-              },
-              {
-                label: 'Dietikon',
-                value: 'Dietikon',
-                name: 'region',
-                checked: form.regions.includes('Dietikon'),
-              },
-              {
-                label: 'Hinwil',
-                value: 'Hinwil',
-                name: 'region',
-                checked: form.regions.includes('Hinwil'),
-              },
-              {
-                label: 'Horgen',
-                value: 'Horgen',
-                name: 'region',
-                checked: form.regions.includes('Horgen'),
-              },
-              {
-                label: 'Meilen',
-                value: 'Meilen',
-                name: 'region',
-                checked: form.regions.includes('Meilen'),
-              },
-              {
-                label: 'Pfäffikon',
-                value: 'Pfäffikon',
-                name: 'region',
-                checked: form.regions.includes('Pfäffikon'),
-              },
-              {
-                label: 'Uster',
-                value: 'Uster',
-                name: 'region',
-                checked: form.regions.includes('Uster'),
-              },
-              {
-                label: 'Winterthur',
-                value: 'Winterthur',
-                name: 'region',
-                checked: form.regions.includes('Winterthur'),
-              },
-            ]}
+            options={regions.map((region) => ({
+              label: region,
+              value: region,
+              name: 'region',
+              checked: form.region.includes(region),
+            }))}
           />
           <Selection
             onChange={handleChange}
