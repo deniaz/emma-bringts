@@ -21,7 +21,7 @@ function reduce<S>(state: S, target: Targetable): S {
 type Reducer<S> = (prevState: S, target: Targetable) => S;
 
 const styles = {
-  title: 'text-xl text-sans mb-6 text-indigo-900',
+  title: 'text-xl font-sans mb-6 text-indigo-900',
   form: 'w-1/2 mx-auto',
   street: 'grid grid-cols-3 gap-4',
   zip: 'col-span-1',
