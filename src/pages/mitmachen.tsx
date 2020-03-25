@@ -42,8 +42,9 @@ function reduce<S>(state: S, action: A): S {
 type Reducer<S> = (prevState: S, action: A) => S;
 
 const styles = {
+  container: 'px-4',
   title: 'text-xl font-sans mb-6 text-indigo-900',
-  form: 'w-1/2 mx-auto',
+  form: 'w-full lg:w-1/2 mx-auto',
   street: 'grid grid-cols-3 gap-4',
   zip: 'col-span-1',
   locality: 'col-span-2',
@@ -179,120 +180,127 @@ export default () => {
 
   return (
     <Stacked>
-      {status === 'success' && vendor !== null && (
-        <div>
-          <h3 className={styles.title}>Vielen Dank! Hier siehst du dein Angebot:</h3>
-          <VendorList vendors={[vendor]} />
-        </div>
-      )}
-      {status === 'error' && (
-        <div>
-          <h3 className={styles.title}>Das ging leider schief.</h3>
-        </div>
-      )}
-      {(status === null || status === 'pending') && (
-        <form className={styles.form} onSubmit={handleSubmit}>
-          <h3 className={styles.title}>Über dein Unternehmen und Angebot</h3>
-          <Input name="vendor" onChange={handleChange} label="Anbieter" value={form.vendor} type="text" />
-          <Textarea onChange={handleChange} name="description" label="Beschreibe deine Angebote" value={form.description} />
-          <Selection
-            onChange={handleListChange}
-            label="Angebotskategorie"
-            options={categories.map((category) => ({
-              label: category,
-              value: category,
-              name: 'categories',
-              checked: form.categories.includes(category),
-            }))}
-          />
-
-          <h3 className={styles.title}>Bestellungen</h3>
-
-          <Selection
-            onChange={handleChange}
-            label="Abholung / Lieferung"
-            options={[
-              {
-                label: 'Abholung',
-                name: 'TAKEAWAY',
-                checked: form.TAKEAWAY,
-              },
-              {
-                label: 'Lieferung Velo / Auto',
-                name: 'DELIVERY',
-                checked: form.DELIVERY,
-              },
-              {
-                label: 'Lieferung per Post',
-                name: 'DELIVERY_MAIL',
-                checked: form.DELIVERY_MAIL,
-              },
-              {
-                label: 'Selbst ernten',
-                name: 'SELF_SERVICE',
-                checked: form.SELF_SERVICE,
-              },
-            ]}
-          />
-          <Selection
-            onChange={handleListChange}
-            label="Region"
-            options={regions.map((region) => ({
-              label: region,
-              value: region,
-              name: 'region',
-              checked: form.region.includes(region),
-            }))}
-          />
-          <Selection
-            onChange={handleChange}
-            label="Bestellmöglichkeiten"
-            options={[
-              {
-                label: 'Telefon',
-                name: 'order_by_phone',
-                checked: form.order_by_phone,
-              },
-              {
-                label: 'E-Mail',
-                name: 'order_by_email',
-                checked: form.order_by_email,
-              },
-              {
-                label: 'Webseite',
-                name: 'order_by_website',
-                checked: form.order_by_website,
-              },
-            ]}
-          />
-
-          <Input label="Telefon-Nr." name="phone" type="tel" onChange={handleChange} value={form.phone} />
-          <Input label="E-Mail" name="email" type="email" onChange={handleChange} value={form.email} />
-          <Input label="Webseite" name="website" type="url" onChange={handleChange} value={form.website} />
-
-          <Input
-            label="Abholzeiten / mögl. Lieferzeiten"
-            name="hours"
-            type="text"
-            onChange={handleChange}
-            value={form.hours}
-          />
-
-          <h3 className={styles.title}>Adresse</h3>
-          <Input label="Strasse und Nr." name="street" type="text" onChange={handleChange} value={form.street} />
-          <div className={styles.street}>
-            <div className={styles.zip}>
-              <Input label="PLZ" name="zip" type="number" onChange={handleChange} value={form.zip} />
-            </div>
-            <div className={styles.locality}>
-              <Input label="Ort" name="locality" type="text" onChange={handleChange} value={form.locality} />
-            </div>
+      <div className={styles.container}>
+        {status === 'success' && vendor !== null && (
+          <div>
+            <h3 className={styles.title}>Vielen Dank! Hier siehst du dein Angebot:</h3>
+            <VendorList vendors={[vendor]} />
           </div>
-          <Button disabled={status === 'pending'} type="submit">
-            {status === 'pending' ? 'Wird gespeichert...' : 'Angebot hinzufügen'}
-          </Button>
-        </form>
-      )}
+        )}
+        {status === 'error' && (
+          <div>
+            <h3 className={styles.title}>Das ging leider schief.</h3>
+          </div>
+        )}
+        {(status === null || status === 'pending') && (
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <h3 className={styles.title}>Über dein Unternehmen und Angebot</h3>
+            <Input name="vendor" onChange={handleChange} label="Anbieter" value={form.vendor} type="text" />
+            <Textarea
+              onChange={handleChange}
+              name="description"
+              label="Beschreibe deine Angebote"
+              value={form.description}
+            />
+            <Selection
+              onChange={handleListChange}
+              label="Angebotskategorie"
+              options={categories.map((category) => ({
+                label: category,
+                value: category,
+                name: 'categories',
+                checked: form.categories.includes(category),
+              }))}
+            />
+
+            <h3 className={styles.title}>Bestellungen</h3>
+
+            <Selection
+              onChange={handleChange}
+              label="Abholung / Lieferung"
+              options={[
+                {
+                  label: 'Abholung',
+                  name: 'TAKEAWAY',
+                  checked: form.TAKEAWAY,
+                },
+                {
+                  label: 'Lieferung Velo / Auto',
+                  name: 'DELIVERY',
+                  checked: form.DELIVERY,
+                },
+                {
+                  label: 'Lieferung per Post',
+                  name: 'DELIVERY_MAIL',
+                  checked: form.DELIVERY_MAIL,
+                },
+                {
+                  label: 'Selbst ernten',
+                  name: 'SELF_SERVICE',
+                  checked: form.SELF_SERVICE,
+                },
+              ]}
+            />
+            <Selection
+              onChange={handleListChange}
+              label="Region"
+              options={regions.map((region) => ({
+                label: region,
+                value: region,
+                name: 'region',
+                checked: form.region.includes(region),
+              }))}
+            />
+            <Selection
+              onChange={handleChange}
+              label="Bestellmöglichkeiten"
+              options={[
+                {
+                  label: 'Telefon',
+                  name: 'order_by_phone',
+                  checked: form.order_by_phone,
+                },
+                {
+                  label: 'E-Mail',
+                  name: 'order_by_email',
+                  checked: form.order_by_email,
+                },
+                {
+                  label: 'Webseite',
+                  name: 'order_by_website',
+                  checked: form.order_by_website,
+                },
+              ]}
+            />
+
+            <Input label="Telefon-Nr." name="phone" type="tel" onChange={handleChange} value={form.phone} />
+            <Input label="E-Mail" name="email" type="email" onChange={handleChange} value={form.email} />
+            <Input label="Webseite" name="website" type="url" onChange={handleChange} value={form.website} />
+
+            <Input
+              label="Abholzeiten / mögl. Lieferzeiten"
+              name="hours"
+              type="text"
+              onChange={handleChange}
+              value={form.hours}
+            />
+
+            <h3 className={styles.title}>Adresse</h3>
+            <Input label="Strasse und Nr." name="street" type="text" onChange={handleChange} value={form.street} />
+            <div className={styles.street}>
+              <div className={styles.zip}>
+                <Input label="PLZ" name="zip" type="number" onChange={handleChange} value={form.zip} />
+              </div>
+              <div className={styles.locality}>
+                <Input label="Ort" name="locality" type="text" onChange={handleChange} value={form.locality} />
+              </div>
+            </div>
+            <Button disabled={status === 'pending'} type="submit">
+              {status === 'pending' ? 'Wird gespeichert...' : 'Angebot hinzufügen'}
+            </Button>
+          </form>
+        )}
+      </div>
     </Stacked>
   );
 };
