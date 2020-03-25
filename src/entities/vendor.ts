@@ -19,6 +19,10 @@ type VendorData = {
 
 export type MongoVendor = {
   _id: string;
+  location?: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
 } & VendorData;
 
 export type Vendor = {

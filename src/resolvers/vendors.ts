@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
-import { Vendor } from '../entities/vendor';
+import { MongoVendor, Vendor } from '../entities/vendor';
 import { VendorInput } from '../schemas/graphql';
 import { getShopsCollection } from '../services/mongo';
 
-const key = process.env.OPENCAGEDATA_API_KEY;
+const API_KEY = process.env.OPENCAGEDATA_API_KEY;
 
 const buildQuery = async ({ service, tenants, zip }: VendorInput['filter']) => {
   const criteria = {};
@@ -21,7 +21,7 @@ const buildQuery = async ({ service, tenants, zip }: VendorInput['filter']) => {
   }
 
   if (zip) {
-    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?key=${key}&q=${zip}+schweiz`);
+    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${zip}+schweiz`);
 
     const { results } = await response.json();
     const [{ geometry }] = results;
@@ -40,13 +40,59 @@ const buildQuery = async ({ service, tenants, zip }: VendorInput['filter']) => {
   return criteria;
 };
 
-export const vendors = async ({ filter = {} }: VendorInput): Promise<Vendor[]> => {
-  const collection = await getShopsCollection();
-  const query = await buildQuery(filter);
-  const docs = await collection.find(query).toArray();
+const buildInsert = async (vendor: Vendor): Promise<Omit<MongoVendor, '_id'>> => {
+  const response = await fetch(
+    `https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${encodeURIComponent(vendor.address.join(', '))}`
+  );
 
-  return docs.map(({ _id, ...doc }) => ({
-    id: _id,
-    ...doc,
-  }));
+  if (!response.ok) {
+    return vendor;
+  }
+
+  const { results } = await response.json();
+  const [first] = results;
+
+  if (!first) {
+    return vendor;
+  }
+
+  const { lat, lng } = first.geometry;
+
+  return {
+    ...vendor,
+    tenant: 'EMMA',
+    location: {
+      type: 'Point',
+      coordinates: [lat, lng],
+    },
+  };
+};
+
+export const vendors = {
+  createVendor: async ({ vendor }: { vendor: Vendor }): Promise<Vendor> => {
+    const insertion = await buildInsert(vendor);
+
+    const collection = await getShopsCollection();
+
+    const {
+      ops: [created],
+    } = await collection.insert(insertion as any); // eslint-disable-line @typescript-eslint/no-explicit-any
+
+    const { _id, ...doc } = created;
+
+    return {
+      id: _id,
+      ...doc,
+    };
+  },
+  vendors: async ({ filter = {} }: VendorInput): Promise<Vendor[]> => {
+    const collection = await getShopsCollection();
+    const query = await buildQuery(filter);
+    const docs = await collection.find(query).toArray();
+
+    return docs.map(({ _id, ...doc }) => ({
+      id: _id,
+      ...doc,
+    }));
+  },
 };

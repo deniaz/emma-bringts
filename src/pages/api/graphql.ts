@@ -4,7 +4,7 @@ import { vendors } from '../../resolvers/vendors';
 import { schema } from '../../schemas/graphql';
 
 const root = {
-  vendors,
+  ...vendors,
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
