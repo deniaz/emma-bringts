@@ -2,11 +2,10 @@ import { FC, MouseEvent } from 'react';
 import { Button } from './button';
 
 const styles = {
-  container: 'inline-flex self-end relative flex-col lg:mx-2 box-border',
+  container: 'inline-flex self-end relative lg:mx-2 box-border',
 
-  inputWrapper: 'font-sans text-sm lg:text-base bg-white p-2 self-center rounded-full flex mx-auto',
-  // term: 'rounded-tl-full rounded-bl-full px-6 py-4 w-1/2',
-  input: 'px-6 py-4 rounded-full',
+  inputWrapper: 'font-sans text-sm lg:text-base bg-white py-2 lg:py-4 rounded-full flex',
+  input: 'px-4 py-2 lg:px-8 lg:py-4 rounded-full',
 };
 
 type Props = {

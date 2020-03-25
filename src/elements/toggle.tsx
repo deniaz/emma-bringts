@@ -2,8 +2,9 @@ import { FC } from 'react';
 import { Icon } from '../identity/icon';
 
 const styles = {
-  container: 'rounded-full bg-indigo-100 px-2 py-2 mx-auto mb-4 lg:mb-0 lg:mx-2 self-end inline-flex',
-  button: 'font-sans text-xs lg:text-base rounded-full px-4 lg:px-8 py-2 lg:py-4 flex-row fill-current inline-flex',
+  container: 'rounded-full bg-indigo-100 px-2 py-2 lg:py-4 lg:mb-0 mx-4 inline-flex',
+  button:
+    'font-sans text-xs lg:text-base leading-loose lg:leading-normal rounded-full px-4 py-2 lg:px-8 lg:py-4 flex-row fill-current inline-flex',
   inactive: 'text-indigo-500',
   active: 'bg-white text-black',
   icon: 'mr-3',

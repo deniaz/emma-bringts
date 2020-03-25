@@ -2,7 +2,7 @@ import { FC, MouseEvent } from 'react';
 import { SearchInput } from '../elements/search-input';
 import { Toggle, ToggleOption } from '../elements/toggle';
 
-const styles = { form: 'flex flex-col lg:flex-row justify-center mb-8' };
+const styles = { form: 'flex justify-center mb-8' };
 
 type Props = {
   className?: string;
