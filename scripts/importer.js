@@ -49,6 +49,7 @@ const mapVendor = (doc) => ({
   hours: toArray(doc.hours).map(trim),
   order: toArray(doc.order_options).filter(isValidOrder).map(toOrder),
   region: doc.region,
+  tenant: 'SFY',
 });
 
 (async function () {
@@ -83,7 +84,7 @@ const mapVendor = (doc) => ({
 
     const { lat, lng } = first.geometry;
 
-    const geo = enriched.push({
+    enriched.push({
       ...mapVendor(shop),
       location: {
         type: 'Point',

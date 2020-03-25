@@ -16,8 +16,8 @@ const styles = {
 
 const fetcher = (query: string, variables?: Variables) => request('/api/graphql', query, variables);
 
-const getVendors = `query Vendors($service: [Service!], $zip: Int) {
-  vendors(filter: {service: $service, zip: $zip}) {
+const getVendors = `query Vendors($service: [Service!], $zip: Int, $tenants: [Tenant!]) {
+  vendors(filter: {service: $service, tenants: $tenants, zip: $zip}) {
     id
     name
     categories
@@ -33,6 +33,8 @@ const getVendors = `query Vendors($service: [Service!], $zip: Int) {
 
 export default () => {
   const { query } = useRouter();
+
+  const tenants = query['tenants'] && query['tenants'];
 
   const [service, setService] = useState<'DELIVERY' | 'TAKEAWAY'>('TAKEAWAY');
   const [zip, setZip] = useState<string>('');
@@ -56,16 +58,20 @@ export default () => {
   }, [postcode]);
 
   const variables = useMemo(() => {
-    if (zip) {
-      return {
-        service,
-        zip: parseInt(zip, 10),
-      };
+    const params = { service };
+
+    if (tenants) {
+      params['tenants'] = Array.isArray(tenants) ? tenants : [tenants];
     }
 
-    return { service };
-  }, [zip, service]);
+    if (zip) {
+      params['zip'] = parseInt(zip, 10);
+    }
 
+    return params;
+  }, [zip, service, tenants]);
+
+  console.log(variables);
   const { data } = useSWR([getVendors, variables], fetcher);
 
   return (

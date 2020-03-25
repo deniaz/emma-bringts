@@ -1,10 +1,11 @@
 import { buildSchema } from 'graphql';
-import { Service } from '../entities/vendor';
+import { Service, Tenant } from '../entities/vendor';
 
 export type VendorInput = {
   filter: {
     service?: Service[];
     zip?: number;
+    tenants?: Tenant[];
   };
 };
 
@@ -12,6 +13,7 @@ export const schema = buildSchema(`
   input VendorFilterInput {
     service: [Service!]
     zip: Int
+    tenants: [Tenant!]
   }
 
   enum Service {
@@ -27,6 +29,11 @@ export const schema = buildSchema(`
     WEBSITE
   }
 
+  enum Tenant {
+    EMMA
+    SFY
+  }
+
   type Vendor {
     id: String!
     name: String!
@@ -38,6 +45,7 @@ export const schema = buildSchema(`
     address: [String]!
     order: [Order]!
     contact: [String]!
+    tenant: String!
   }
 
   type Query {
