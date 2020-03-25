@@ -10,15 +10,36 @@ import { Stacked } from '../layout/stacked';
 
 type Targetable = HTMLInputElement | HTMLTextAreaElement;
 
+type A =
+  | {
+      type: 'update';
+      target: Targetable;
+    }
+  | { type: 'region_change'; region: string };
+
 const isCheckbox = (element: Targetable): element is HTMLInputElement => element.type === 'checkbox';
-function reduce<S>(state: S, target: Targetable): S {
-  return {
-    ...state,
-    [target.getAttribute('name')]: isCheckbox(target) ? target.checked : target.value,
-  };
+
+function reduce<S>(state: S, action: A): S {
+  if (action.type === 'update') {
+    return {
+      ...state,
+      [action.target.getAttribute('name')]: isCheckbox(action.target) ? action.target.checked : action.target.value,
+    };
+  }
+
+  if (action.type === 'region_change') {
+    return {
+      ...state,
+      regions: state['regions'].includes(action.region)
+        ? state['regions'].filter((region) => region !== action.region)
+        : [...state['regions'], action.region],
+    };
+  }
+
+  return state;
 }
 
-type Reducer<S> = (prevState: S, target: Targetable) => S;
+type Reducer<S> = (prevState: S, action: A) => S;
 
 const styles = {
   title: 'text-xl font-sans mb-6 text-indigo-900',
@@ -55,6 +76,7 @@ export default () => {
     street: '',
     zip: '',
     locality: '',
+    regions: [],
   };
 
   const [form, dispatch] = useReducer<Reducer<typeof initial>>(reduce, initial);
@@ -63,7 +85,17 @@ export default () => {
 
   function handleChange(e: ChangeEvent<Targetable>) {
     e.persist();
-    dispatch(e.target);
+    dispatch({
+      type: 'update',
+      target: e.target,
+    });
+  }
+
+  function handleRegionChange(e: ChangeEvent<HTMLInputElement>) {
+    dispatch({
+      type: 'region_change',
+      region: e.target.value,
+    });
   }
 
   const submit = async () => {
@@ -88,6 +120,7 @@ export default () => {
       const variables = {
         vendor: {
           name: form.vendor,
+          region: form.regions.join(', '),
           categories: [
             form.veggies && 'veggies',
             form.dairies && 'dairies',
@@ -205,6 +238,84 @@ export default () => {
                 label: 'Selbst ernten',
                 name: 'SELF_SERVICE',
                 checked: form.SELF_SERVICE,
+              },
+            ]}
+          />
+          <Selection
+            onChange={handleRegionChange}
+            label="Region"
+            options={[
+              {
+                label: 'Zürich (Stadt)',
+                value: 'Zürich (Stadt)',
+                name: 'region',
+                checked: form.regions.includes('Zürich (Stadt)'),
+              },
+              {
+                label: 'Affoltern',
+                value: 'Affoltern',
+                name: 'region',
+                checked: form.regions.includes('Affoltern'),
+              },
+              {
+                label: 'Andelfingen',
+                value: 'Andelfingen',
+                name: 'region',
+                checked: form.regions.includes('Andelfingen'),
+              },
+              {
+                label: 'Bülach',
+                value: 'Bülach',
+                name: 'region',
+                checked: form.regions.includes('Bülach'),
+              },
+              {
+                label: 'Dielsdorf',
+                value: 'Dielsdorf',
+                name: 'region',
+                checked: form.regions.includes('Dielsdorf'),
+              },
+              {
+                label: 'Dietikon',
+                value: 'Dietikon',
+                name: 'region',
+                checked: form.regions.includes('Dietikon'),
+              },
+              {
+                label: 'Hinwil',
+                value: 'Hinwil',
+                name: 'region',
+                checked: form.regions.includes('Hinwil'),
+              },
+              {
+                label: 'Horgen',
+                value: 'Horgen',
+                name: 'region',
+                checked: form.regions.includes('Horgen'),
+              },
+              {
+                label: 'Meilen',
+                value: 'Meilen',
+                name: 'region',
+                checked: form.regions.includes('Meilen'),
+              },
+              {
+                label: 'Pfäffikon',
+                value: 'Pfäffikon',
+                name: 'region',
+                checked: form.regions.includes('Pfäffikon'),
+              },
+              {
+                label: 'Uster',
+                value: 'Uster',
+                name: 'region',
+                checked: form.regions.includes('Uster'),
+              },
+              {
+                label: 'Winterthur',
+                value: 'Winterthur',
+                name: 'region',
+                checked: form.regions.includes('Winterthur'),
               },
             ]}
           />

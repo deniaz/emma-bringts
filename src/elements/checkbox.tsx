@@ -13,13 +13,14 @@ const styles = {
 export type Props = {
   name: string;
   label: string;
+  value?: string;
   checked?: boolean;
   onChange(e: ChangeEvent<HTMLInputElement>): void;
 };
 
-export const Checkbox: FC<Props> = ({ name, onChange, checked = false, label }) => (
+export const Checkbox: FC<Props> = ({ name, onChange, value, checked = false, label }) => (
   <label className={[styles.container, checked && styles.checkedInput].filter(Boolean).join(' ')}>
-    <input onChange={onChange} className={styles.input} name={name} type="checkbox" checked={checked} />
+    <input value={value} onChange={onChange} className={styles.input} name={name} type="checkbox" checked={checked} />
     <span className={[styles.label, checked ? styles.checkedLabel : styles.uncheckedLabel].filter(Boolean).join(' ')}>
       {label}
     </span>

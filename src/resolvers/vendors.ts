@@ -60,6 +60,7 @@ const buildInsert = async (vendor: Vendor): Promise<Omit<MongoVendor, '_id'>> =>
 
   return {
     ...vendor,
+    tenant: 'EMMA',
     location: {
       type: 'Point',
       coordinates: [lat, lng],
