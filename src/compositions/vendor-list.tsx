@@ -2,7 +2,7 @@ import { FC, Fragment, ReactNode } from 'react';
 import { Hyperlink } from '../elements/hyperlink';
 import { Tag } from '../elements/tag';
 import { Vendor } from '../entities/vendor';
-import { Icon } from '../identity/icon';
+import { Icon, IconName } from '../identity/icon';
 import { BodyText } from '../identity/typography/body-text';
 
 const urlRegex = new RegExp(
@@ -29,6 +29,19 @@ const getLink = (el: string): ReactNode => {
   }
 
   return el;
+};
+
+const mapTagToText = (service: string) => {
+  switch (service) {
+    case 'TAKEAWAY':
+      return 'Abholung';
+    case 'DELIVERY_MAIL':
+      return 'Lieferung per Post';
+    case 'DELIVERY':
+      return 'Lieferung per Velo / Auto';
+    case 'SELF_SERVICE':
+      return 'Selbst ernten';
+  }
 };
 
 const styles = {
@@ -79,7 +92,10 @@ const VendorItem: FC<ItemProps> = ({ title, tags, region, body, categories, hour
         <h2 className={styles.vendor}>{title}</h2>
         <div className={styles.tags}>
           {tags.map((tag) => (
-            <Tag key={tag}>{tag}</Tag>
+            <Tag key={tag}>
+              <Icon className={styles.regionIcon} name={tag as IconName} size={16} />
+              {mapTagToText(tag)}
+            </Tag>
           ))}
         </div>
 
