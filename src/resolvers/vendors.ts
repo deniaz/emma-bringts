@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { MongoVendor, Vendor } from '../entities/vendor';
+import { Context } from '../pages/api/graphql';
 import { VendorInput } from '../schemas/graphql';
-import { getClient } from '../services/mongo';
 
 const API_KEY = process.env.OPENCAGEDATA_API_KEY;
 
@@ -69,17 +69,14 @@ const buildInsert = async (vendor: Vendor): Promise<Omit<MongoVendor, '_id'>> =>
 };
 
 export const vendors = {
-  createVendor: async ({ vendor }: { vendor: Vendor }): Promise<Vendor> => {
+  createVendor: async ({ vendor }: { vendor: Vendor }, { client }: Context): Promise<Vendor> => {
     const insertion = await buildInsert(vendor);
 
-    const client = await getClient();
-    const collection = client.db('shop').collection<MongoVendor>('shops');
+    const collection = client.db('shops').collection<MongoVendor>('shops');
 
     const {
       ops: [created],
     } = await collection.insert(insertion as any); // eslint-disable-line @typescript-eslint/no-explicit-any
-
-    await client.close();
 
     const { _id, ...doc } = created;
 
@@ -88,14 +85,11 @@ export const vendors = {
       ...doc,
     };
   },
-  vendors: async ({ filter = {} }: VendorInput): Promise<Vendor[]> => {
-    const client = await getClient();
-    const collection = client.db('shop').collection<MongoVendor>('shops');
+  vendors: async ({ filter = {} }: VendorInput, { client }: Context): Promise<Vendor[]> => {
+    const collection = client.db('shops').collection<MongoVendor>('shops');
 
     const query = await buildQuery(filter);
     const docs = await collection.find(query).toArray();
-
-    await client.close();
 
     return docs.map(({ _id, ...doc }) => ({
       id: _id,
