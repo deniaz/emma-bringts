@@ -8,12 +8,16 @@ type VendorData = {
   name: string;
   categories: string[];
   body: string;
-  region: string;
   service: Service[];
   hours: string[];
-  address: string[];
+  address: string;
+  zip: number;
+  state: string;
+  locality: string;
   order: Order[];
-  contact: string[];
+  phone?: string;
+  email?: string;
+  website?: string;
   tenant: Tenant;
 };
 

@@ -41,9 +41,9 @@ const buildQuery = async ({ service, tenants, zip }: VendorInput['filter']) => {
 };
 
 const buildInsert = async (vendor: Vendor): Promise<Omit<MongoVendor, '_id'>> => {
-  const response = await fetch(
-    `https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${encodeURIComponent(vendor.address.join(', '))}`
-  );
+  const { address, zip, locality } = vendor;
+  const q = `${encodeURIComponent(address)}, ${encodeURIComponent(zip)} ${encodeURIComponent(locality)}, Schweiz`;
+  const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${q}`);
 
   if (!response.ok) {
     return vendor;
@@ -56,11 +56,15 @@ const buildInsert = async (vendor: Vendor): Promise<Omit<MongoVendor, '_id'>> =>
     return vendor;
   }
 
-  const { lat, lng } = first.geometry;
+  const {
+    geometry: { lat, lng },
+    components: { state },
+  } = first;
 
   return {
-    ...vendor,
+    state,
     tenant: 'EMMA',
+    ...vendor,
     location: {
       type: 'Point',
       coordinates: [lat, lng],

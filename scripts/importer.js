@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 
 const API_KEY = process.env.OPENCAGEDATA_API_KEY;
 
-const file = './data/zueri-markt_20200323-2126.csv';
+const file = './data/cleaned-sfy.csv';
 
 const isValidService = (service) =>
   ['Abholung', 'Lieferung per Post', 'Lieferung per Velo / Auto', 'Selbst ernten'].includes(service);
@@ -40,15 +40,18 @@ const trim = (text) => text.trim();
 const toArray = (text) => text.split(',');
 
 const mapVendor = (doc) => ({
-  name: doc.vendor,
-  service: toArray(doc.type).filter(isValidService).map(toService),
-  body: doc.offer,
-  address: toArray(doc.address),
+  name: doc.name,
+  address: doc.address,
+  zip: doc.zip,
+  locality: doc.locality,
   categories: toArray(doc.category).map(trim),
-  contact: toArray(doc.contact),
+  body: doc.body,
+  service: toArray(doc.service).filter(isValidService).map(toService),
   hours: toArray(doc.hours).map(trim),
-  order: toArray(doc.order_options).filter(isValidOrder).map(toOrder),
-  region: doc.region,
+  order: toArray(doc.order),
+  email: doc.email,
+  phone: doc.phone,
+  website: doc.website,
   tenant: 'SFY',
 });
 
@@ -57,20 +60,14 @@ const mapVendor = (doc) => ({
   let enriched = [];
 
   for (const shop of data) {
-    const address = shop.address;
+    const { address, zip, locality } = shop;
+    const q = `${encodeURIComponent(address)}, ${encodeURIComponent(zip)} ${encodeURIComponent(locality)}, Schweiz`;
 
-    if (!address) {
-      console.info(`No address for ${shop.vendor}`);
-      continue;
-    }
-
-    const response = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${encodeURIComponent(address)}`
-    );
+    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${q}`);
 
     if (!response.ok) {
       console.info(response.url);
-      console.info(`failed ${shop.vendor} (${response.status})!`);
+      console.info(`failed ${shop.name} (${response.status})!`);
       continue;
     }
 
@@ -78,14 +75,18 @@ const mapVendor = (doc) => ({
     const [first] = results;
 
     if (!first) {
-      console.info(`no results for ${shop.vendor}!`);
+      console.info(`no results for ${shop.name}!`);
       continue;
     }
 
-    const { lat, lng } = first.geometry;
+    const {
+      geometry: { lat, lng },
+      components: { state },
+    } = first;
 
     enriched.push({
       ...mapVendor(shop),
+      state,
       location: {
         type: 'Point',
         coordinates: [lat, lng],
@@ -93,16 +94,16 @@ const mapVendor = (doc) => ({
     });
   }
 
-  const client = new MongoClient(process.env.MONGO_IMPORTER, { useUnifiedTopology: true });
+  const client = new MongoClient(process.env.MONGO_DB_HOST, { useUnifiedTopology: true });
   await client.connect();
 
-  await client.db('shops').collection('shops').deleteMany({});
+  await client.db('shops').collection('shops').deleteMany({ tenant: 'SFY' });
   await client.db('shops').collection('shops').insertMany(enriched);
 
   await client.close();
 
   console.info(`succeeded for ${enriched.length} shops`);
 
-  console.log(enriched);
+  // console.log(enriched);
   process.exit(0);
 })();

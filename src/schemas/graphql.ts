@@ -39,12 +39,16 @@ export const schema = buildSchema(`
     name: String!
     categories: [String]!
     body: String
-    region: String
     service: [Service]!
     hours: [String]!
-    address: [String]!
+    address: String!
+    zip: Int!
+    locality: String!
+    state: String!
     order: [Order]!
-    contact: [String]!
+    phone: String
+    email: String
+    website: String
     tenant: String!
   }
 
@@ -52,12 +56,16 @@ export const schema = buildSchema(`
     name: String!
     categories: [String]!
     body: String
-    region: String
     service: [Service]!
     hours: [String]!
-    address: [String]!
+    address: String!
+    zip: Int!
+    locality: String!
     order: [Order]!
-    contact: [String]!
+    phone: String
+    email: String
+    website: String
+    tenant: String
   }
 
 

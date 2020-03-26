@@ -111,19 +111,21 @@ export default () => {
           name
           categories
           body
-          region
           service
           hours
           address
+          zip
+          locality
           order
-          contact
+          email
+          phone
+          website
         }
       }`;
 
       const variables = {
         vendor: {
           name: form.vendor,
-          region: form.region.join(', '),
           categories: form.categories,
           body: form.description,
           service: [
@@ -133,11 +135,15 @@ export default () => {
             form.SELF_SERVICE && 'SELF_SERVICE',
           ].filter(Boolean),
           hours: form.hours,
-          address: `${form.street}, ${form.zip} ${form.locality}`,
+          address: form.street,
+          zip: form.zip,
+          locality: form.locality,
           order: [form.order_by_email && 'EMAIL', form.order_by_phone && 'PHONE', form.order_by_website && 'WEBSITE'].filter(
             Boolean
           ),
-          contact: [form.phone, form.email, form.website].filter(Boolean),
+          phone: form.phone,
+          email: form.email,
+          website: form.website,
         },
       };
 
