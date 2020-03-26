@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { MongoVendor, Vendor } from '../entities/vendor';
 import { VendorInput } from '../schemas/graphql';
-import { getShopsCollection } from '../services/mongo';
+import { getClient } from '../services/mongo';
 
 const API_KEY = process.env.OPENCAGEDATA_API_KEY;
 
@@ -72,11 +72,14 @@ export const vendors = {
   createVendor: async ({ vendor }: { vendor: Vendor }): Promise<Vendor> => {
     const insertion = await buildInsert(vendor);
 
-    const collection = await getShopsCollection();
+    const client = await getClient();
+    const collection = client.db('shop').collection<MongoVendor>('shops');
 
     const {
       ops: [created],
     } = await collection.insert(insertion as any); // eslint-disable-line @typescript-eslint/no-explicit-any
+
+    await client.close();
 
     const { _id, ...doc } = created;
 
@@ -86,9 +89,13 @@ export const vendors = {
     };
   },
   vendors: async ({ filter = {} }: VendorInput): Promise<Vendor[]> => {
-    const collection = await getShopsCollection();
+    const client = await getClient();
+    const collection = client.db('shop').collection<MongoVendor>('shops');
+
     const query = await buildQuery(filter);
     const docs = await collection.find(query).toArray();
+
+    await client.close();
 
     return docs.map(({ _id, ...doc }) => ({
       id: _id,
