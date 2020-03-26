@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -37,10 +36,7 @@ export default () => {
   }, [postcode]);
 
   return (
-    <Stacked>
-      <Head>
-        <title>Emma bringts!</title>
-      </Head>
+    <Stacked title="Emma bringts! - Ein Verzeichnis von Unternehmen mit Abhol- oder Lieferservice.">
       <Intro />
 
       <p className={styles.label}>Finde Angebote in deiner Nähe </p>
@@ -60,8 +56,10 @@ export default () => {
           </Link>
         }
       >
-        <Headline>Möchtest auch du zeigen, dass du aktuell lieferst?</Headline>
-        <BodyText>Emma bringts! ist für alle gratis</BodyText>
+        <Headline>Hat dein Geschäft noch geöffnet?</Headline>
+        <BodyText>
+          Mit deinem Eintrag auf Emma bringts! ist dein Abhol- oder Lieferservice für alle klar ersichtlich.
+        </BodyText>
       </Card>
     </Stacked>
   );

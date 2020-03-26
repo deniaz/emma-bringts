@@ -1,4 +1,5 @@
 import { ChangeEvent, FC } from 'react';
+import cn from '../utils/classname';
 
 const styles = {
   container:
@@ -17,12 +18,9 @@ export type Props = {
   checked?: boolean;
   onChange(e: ChangeEvent<HTMLInputElement>): void;
 };
-
 export const Checkbox: FC<Props> = ({ name, onChange, value, checked = false, label }) => (
-  <label className={[styles.container, checked && styles.checkedInput].filter(Boolean).join(' ')}>
+  <label className={cn([styles.container, checked && styles.checkedInput])}>
     <input value={value} onChange={onChange} className={styles.input} name={name} type="checkbox" checked={checked} />
-    <span className={[styles.label, checked ? styles.checkedLabel : styles.uncheckedLabel].filter(Boolean).join(' ')}>
-      {label}
-    </span>
+    <span className={cn([styles.label, checked ? styles.checkedLabel : styles.uncheckedLabel])}>{label}</span>
   </label>
 );

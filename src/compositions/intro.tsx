@@ -15,10 +15,10 @@ export const Intro: FC = () => (
     <div className={styles.body}>
       <h1 className={styles.display}>Emma bringts!</h1>
       <Lead>
-        Dank Covid-19 kaufen wir nicht mehr bei Tante Emma ein, sondern Emma bringts. emmabringts.ch ist ein
-        Onlineverzeichnis von Einzelhändlern und Kleinlieferannt*Innen, die neu auf Liefer- und Takeawayservice angewiesen
-        sind.
+        Finde Unternehmen, die während der ausserordentlichen Lage Ihre Produkte zum Abholen oder sogar eine Heimlieferung
+        anbieten.
       </Lead>
+      <Lead>Emma hilft, dich und die Unternehmen in deiner Nähe zusammen zu bringen.</Lead>
     </div>
     <div className={styles.figure}>
       <Illustration className={styles.illustration} name="grandma" size={480} />
