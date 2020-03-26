@@ -99,6 +99,8 @@ const mapVendor = (doc) => ({
   await client.db('shops').collection('shops').deleteMany({});
   await client.db('shops').collection('shops').insertMany(enriched);
 
+  await client.close();
+
   console.info(`succeeded for ${enriched.length} shops`);
 
   console.log(enriched);
