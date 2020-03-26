@@ -15,4 +15,9 @@ module.exports = {
     'react/prop-types': 'off',
     'no-useless-escape': 'off',
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
 };

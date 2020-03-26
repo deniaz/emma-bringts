@@ -179,7 +179,7 @@ export default () => {
   ];
 
   return (
-    <Stacked>
+    <Stacked title="Mach mit - Emma bringts!">
       <div className={styles.container}>
         {status === 'success' && vendor !== null && (
           <div>

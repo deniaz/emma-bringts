@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Icon } from '../identity/icon';
+import cn from '../utils/classname';
 
 const styles = {
   container: 'rounded-full bg-indigo-100 px-2 py-2 mx-auto mb-4 lg:mb-0 lg:mx-2 self-end inline-flex',
@@ -8,8 +9,6 @@ const styles = {
   active: 'bg-white text-black',
   icon: 'mr-3',
 };
-
-const cn = (classes: string[]) => classes.filter(Boolean).join(' ');
 
 export type ToggleOption = 'DELIVERY' | 'TAKEAWAY';
 

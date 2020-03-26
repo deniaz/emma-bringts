@@ -1,13 +1,11 @@
 import { request } from 'graphql-request';
 import { Variables } from 'graphql-request/dist/src/types';
-import Head from 'next/head';
 import { ParsedUrlQuery } from 'querystring';
 import { FC, useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { Search } from '../components/search';
 import { useGetCurrentPosition } from '../hooks/use-get-current-position';
 import { Headline } from '../identity/typography/headline';
-import { Stacked } from '../layout/stacked';
 import { VendorList } from './vendor-list';
 
 const styles = {
@@ -77,10 +75,6 @@ export const SearchWithResults: FC<Props> = ({ query }) => {
 
   return (
     <>
-      <Head>
-        <title>Alle Angebote - Emma bringts!</title>
-      </Head>
-
       <Search onChange={(zip) => setZip(zip)} onToggle={(service) => setService(service)} service={service} zip={zip} />
 
       <header className={styles.header}>

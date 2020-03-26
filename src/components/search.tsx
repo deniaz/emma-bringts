@@ -1,6 +1,7 @@
 import { FC, MouseEvent } from 'react';
 import { SearchInput } from '../elements/search-input';
 import { Toggle, ToggleOption } from '../elements/toggle';
+import cn from '../utils/classname';
 
 const styles = { form: 'flex flex-col lg:flex-row justify-center mb-8' };
 
@@ -13,10 +14,9 @@ type Props = {
   initial?: string;
   onClick?: (ev: MouseEvent) => void;
 };
-
 export const Search: FC<Props> = ({ className, service, zip, onToggle, onChange, onClick }) => {
   return (
-    <form className={[className, styles.form].filter(Boolean).join(' ')}>
+    <form className={cn([className, styles.form])}>
       <Toggle active={service} onChange={onToggle} />
 
       {/* <SearchInput type={type} zip={zip} label={label} /> */}

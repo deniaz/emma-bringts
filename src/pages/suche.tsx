@@ -5,7 +5,7 @@ import { Stacked } from '../layout/stacked';
 export default () => {
   const { query } = useRouter();
   return (
-    <Stacked>
+    <Stacked title="Anbieter und Angebote - Emma bringts!">
       <SearchWithResults query={query} />
     </Stacked>
   );
