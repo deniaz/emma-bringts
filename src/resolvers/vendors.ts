@@ -85,15 +85,21 @@ export const vendors = {
       ...doc,
     };
   },
-  vendors: async ({ filter = {} }: VendorInput, { client }: Context): Promise<Vendor[]> => {
+  vendors: async ({ filter = {}, skip = 0, limit = 50 }: VendorInput, { client }: Context): Promise<Vendor[]> => {
     const collection = client.db('shops').collection<MongoVendor>('shops');
 
     const query = await buildQuery(filter);
-    const docs = await collection.find(query).toArray();
+    const docs = await collection.find(query).limit(limit).skip(skip).toArray();
 
     return docs.map(({ _id, ...doc }) => ({
       id: _id,
       ...doc,
     }));
+  },
+  total: async (_args, { client }: Context): Promise<number> => {
+    const collection = client.db('shops').collection('shops');
+    const count = await collection.countDocuments();
+
+    return count;
   },
 };

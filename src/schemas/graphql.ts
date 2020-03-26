@@ -7,6 +7,8 @@ export type VendorInput = {
     zip?: number;
     tenants?: Tenant[];
   };
+  skip?: number;
+  limit?: number;
 };
 
 export const schema = buildSchema(`
@@ -67,6 +69,7 @@ export const schema = buildSchema(`
   }
 
   type Query {
-    vendors(filter: VendorFilterInput): [Vendor]!
+    vendors(filter: VendorFilterInput, skip: Int, limit: Int): [Vendor]!
+    total: Int!
   }
 `);
