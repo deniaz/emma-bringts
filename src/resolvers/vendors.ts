@@ -85,7 +85,8 @@ export const vendors = {
       ...doc,
     };
   },
-  vendors: async ({ filter = {}, skip = 0, limit = 50 }: VendorInput, { client }: Context): Promise<Vendor[]> => {
+  vendors: async ({ filter = {}, skip = 0, limit = 10 }: VendorInput, { client }: Context): Promise<Vendor[]> => {
+    console.info({ filter, limit, skip });
     const collection = client.db('shops').collection<MongoVendor>('shops');
 
     const query = await buildQuery(filter);
