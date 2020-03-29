@@ -6,7 +6,8 @@
     "develop": "next",
     "lint": "eslint . --ext .ts,.tsx",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "import:sfy": "node scripts/import-sfy.js"
   },
   "keywords": [],
   "repository": {

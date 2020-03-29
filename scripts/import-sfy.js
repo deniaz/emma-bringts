@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 
 const API_KEY = process.env.OPENCAGEDATA_API_KEY;
 
-const file = './data/zueri-markt_20200323-2126.csv';
+const file = './data/cleaned-sfy.csv';
 
 const isValidService = (service) =>
   ['Abholung', 'Lieferung per Post', 'Lieferung per Velo / Auto', 'Selbst ernten'].includes(service);
@@ -39,38 +39,35 @@ const toOrder = (order) => {
 const trim = (text) => text.trim();
 const toArray = (text) => text.split(',');
 
+// name,address,zip,locality,category,body,service,hours,order,email,phone,website
 const mapVendor = (doc) => ({
-  name: doc.vendor,
-  service: toArray(doc.type).filter(isValidService).map(toService),
-  body: doc.offer,
-  address: toArray(doc.address),
+  name: doc.name,
+  service: toArray(doc.service).filter(isValidService).map(toService),
+  body: doc.body,
+  address: [doc.address, `${doc.zip} ${doc.locality}`],
   categories: toArray(doc.category).map(trim),
-  contact: toArray(doc.contact),
+  contact: [doc.email, doc.phone, doc.website].map(trim).filter((el) => el != ''),
   hours: toArray(doc.hours).map(trim),
-  order: toArray(doc.order_options).filter(isValidOrder).map(toOrder),
+  order: toArray(doc.order).map(trim),
   region: doc.region,
   tenant: 'SFY',
 });
 
 (async function () {
   const data = await converter().fromFile(file);
+  let failed = [];
   let enriched = [];
 
   for (const shop of data) {
-    const address = shop.address;
+    const { address } = shop;
+    const q = `${encodeURIComponent(address)}, Schweiz`;
 
-    if (!address) {
-      console.info(`No address for ${shop.vendor}`);
-      continue;
-    }
-
-    const response = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${encodeURIComponent(address)}`
-    );
+    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${q}`);
 
     if (!response.ok) {
       console.info(response.url);
-      console.info(`failed ${shop.vendor} (${response.status})!`);
+      console.info(`failed ${shop.name} (${response.status})!`);
+      failed.push(shop);
       continue;
     }
 
@@ -78,14 +75,19 @@ const mapVendor = (doc) => ({
     const [first] = results;
 
     if (!first) {
-      console.info(`no results for ${shop.vendor}!`);
+      console.info(`no results for ${shop.name}!`);
+      failed.push(shop);
       continue;
     }
 
-    const { lat, lng } = first.geometry;
+    const {
+      geometry: { lat, lng },
+      components: { state },
+    } = first;
 
     enriched.push({
       ...mapVendor(shop),
+      region: state === 'Zurich' ? 'Zürich' : state,
       location: {
         type: 'Point',
         coordinates: [lat, lng],
@@ -93,16 +95,19 @@ const mapVendor = (doc) => ({
     });
   }
 
-  const client = new MongoClient(process.env.MONGO_IMPORTER, { useUnifiedTopology: true });
+  const client = new MongoClient(process.env.MONGO_DB_HOST, { useUnifiedTopology: true });
   await client.connect();
 
-  await client.db('shops').collection('shops').deleteMany({});
-  await client.db('shops').collection('shops').insertMany(enriched);
+  // const [timestamp] = new Date().toISOString().split('.');
+
+  const { deletedCount } = await client.db('shops').collection('shops').deleteMany({ tenant: 'SFY' });
+  const { insertedCount } = await client.db('shops').collection('shops').insertMany(enriched);
 
   await client.close();
 
-  console.info(`succeeded for ${enriched.length} shops`);
+  console.info(`Removed: ${deletedCount}, inserted ${insertedCount} vendors.`);
+  console.info(`Failed imports: ${failed.length}`);
 
-  console.log(enriched);
+  // console.log(enriched);
   process.exit(0);
 })();
