@@ -8,17 +8,17 @@ const styles = {
 };
 
 type Props = {
-  label: string;
+  label?: string;
   options: Omit<CheckboxProps, 'onChange'>[];
   onChange(e: ChangeEvent<HTMLInputElement>): void;
 };
 
 export const Selection: FC<Props> = ({ label, options, onChange }) => (
   <div className={styles.container}>
-    <span className={styles.label}>{label}</span>
+    {label && <span className={styles.label}>{label}</span>}
     <div className={styles.fields}>
       {options.map((option) => (
-        <span className={styles.field} key={option.name}>
+        <span className={styles.field} key={option.value}>
           <Checkbox onChange={onChange} {...option} />
         </span>
       ))}

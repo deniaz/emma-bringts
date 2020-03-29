@@ -9,6 +9,7 @@ import { Button } from '../elements/button';
 import { Vendor as VendorType } from '../entities/vendor';
 import { useGetCurrentPosition } from '../hooks/use-get-current-position';
 import { Headline } from '../identity/typography/headline';
+import { Selection } from './selection';
 const styles = {
   header: 'px-4 box-border mt-4 lg:p-9 lg:m-0',
   button: 'text-center',
@@ -16,8 +17,8 @@ const styles = {
 
 const fetcher = (query: string, variables?: Variables) => request('/api/graphql', query, variables);
 
-const getVendors = `query Vendors($service: [Service!], $zip: Int, $tenants: [Tenant!], $skip: Int!, $limit: Int!) {
-  vendors(filter: {service: $service, tenants: $tenants, zip: $zip}, skip: $skip, limit: $limit) {
+const getVendors = `query Vendors($service: [Service!], $zip: Int, $tenants: [Tenant!], $categories: [String], $skip: Int!, $limit: Int!) {
+  vendors(filter: {service: $service, tenants: $tenants, zip: $zip, categories: $categories}, skip: $skip, limit: $limit) {
     id
     name
     categories
@@ -34,13 +35,15 @@ const getVendors = `query Vendors($service: [Service!], $zip: Int, $tenants: [Te
 
 type Props = {
   query: ParsedUrlQuery;
+  categories: string[];
 };
 
-export const SearchWithResults: FC<Props> = ({ query }) => {
+export const SearchWithResults: FC<Props> = ({ query, categories }) => {
   const tenants = query['tenants'] && query['tenants'];
 
   const [service, setService] = useState<'DELIVERY' | 'TAKEAWAY'>('TAKEAWAY');
   const [zip, setZip] = useState<string>('');
+  const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
 
   const [, postcode] = useGetCurrentPosition();
 
@@ -64,7 +67,7 @@ export const SearchWithResults: FC<Props> = ({ query }) => {
     'results',
     ({ offset, withSWR }) => {
       const variables = useMemo(() => {
-        const params = { service, limit: 10, skip: offset || 0 };
+        const params = { service, categories: categoryFilter, limit: 10, skip: offset || 0 };
 
         if (tenants) {
           params['tenants'] = Array.isArray(tenants) ? tenants : [tenants];
@@ -75,7 +78,7 @@ export const SearchWithResults: FC<Props> = ({ query }) => {
         }
 
         return params;
-      }, [zip, service, tenants, offset]);
+      }, [zip, service, tenants, offset, categoryFilter]);
 
       const { data } = withSWR(useSWR([getVendors, variables], fetcher)) as responseInterface<
         { vendors: VendorType[]; total: number },
@@ -106,12 +109,30 @@ export const SearchWithResults: FC<Props> = ({ query }) => {
     ({ data }) => {
       const offset = data && data.vendors ? data.vendors.length : 0;
       return offset;
-    }
+    },
+    [zip, service, tenants, categoryFilter]
   );
 
   return (
     <>
       <Search onChange={(zip) => setZip(zip)} onToggle={(service) => setService(service)} service={service} zip={zip} />
+
+      <div>
+        <Selection
+          label="Filtern nach Kategorie"
+          onChange={(event) =>
+            categoryFilter.includes(event.target.value)
+              ? setCategoryFilter(categoryFilter.filter((category) => category !== event.target.value))
+              : setCategoryFilter([...categoryFilter, event.target.value])
+          }
+          options={categories.map((category) => ({
+            label: category,
+            value: category,
+            name: 'category',
+            checked: categoryFilter.includes(category),
+          }))}
+        />
+      </div>
 
       <header className={styles.header}>
         <Headline>Händler{zip && ` in ${zip}`}</Headline>
