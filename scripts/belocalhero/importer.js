@@ -68,7 +68,7 @@ const mapVendor = (doc) => ({
     console.log(json);
     data = [...data, ...json];
 
-    if (json.length < 100) {
+    if (json.length < batchSize) {
       break;
     }
 
