@@ -37,6 +37,7 @@ export const schema = buildSchema(`
     EMMA
     SFY
     BELOCALHERO
+    LOKALLOYAL
   }
 
   type Vendor {

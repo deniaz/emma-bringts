@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 const converter = require('csvtojson');
-const fetch = require('node-fetch');
+const { getGeoData } = require('./helpers');
 
 const API_KEY = process.env.OPENCAGEDATA_API_KEY;
 
@@ -62,30 +62,15 @@ const mapVendor = (doc) => ({
 
   for (const shop of data) {
     const { address } = shop;
-    const q = `${encodeURIComponent(address)}, Schweiz`;
 
-    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?key=${API_KEY}&q=${q}`);
+    const geoData = await getGeoData(address, API_KEY);
 
-    if (!response.ok) {
-      console.info(response.url);
-      console.info(`failed ${shop.name} (${response.status})!`);
+    if (!geoData) {
       failed.push(shop);
       continue;
     }
 
-    const { results } = await response.json();
-    const [first] = results;
-
-    if (!first) {
-      console.info(`no results for ${shop.name}!`);
-      failed.push(shop);
-      continue;
-    }
-
-    const {
-      geometry: { lat, lng },
-      components: { state },
-    } = first;
+    const { state, lat, lng } = geoData;
 
     enriched.push({
       ...mapVendor(shop),
