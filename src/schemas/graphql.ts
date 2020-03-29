@@ -36,6 +36,7 @@ export const schema = buildSchema(`
   enum Tenant {
     EMMA
     SFY
+    BELOCALHERO
   }
 
   type Vendor {
