@@ -5,7 +5,7 @@ import { VendorInput } from '../schemas/graphql';
 
 const API_KEY = process.env.OPENCAGEDATA_API_KEY;
 
-const buildQuery = async ({ service, tenants, zip }: VendorInput['filter']) => {
+const buildQuery = async ({ service, tenants, zip, categories }: VendorInput['filter']) => {
   const criteria = {};
 
   if (service) {
@@ -17,6 +17,12 @@ const buildQuery = async ({ service, tenants, zip }: VendorInput['filter']) => {
   if (tenants) {
     criteria['tenant'] = {
       $in: tenants,
+    };
+  }
+
+  if (categories && categories.length > 0) {
+    criteria['categories'] = {
+      $in: categories,
     };
   }
 
@@ -86,7 +92,6 @@ export const vendors = {
     };
   },
   vendors: async ({ filter = {}, skip = 0, limit = 10 }: VendorInput, { client }: Context): Promise<Vendor[]> => {
-    console.info({ filter, limit, skip });
     const collection = client.db('shops').collection<MongoVendor>('shops');
 
     const query = await buildQuery(filter);
@@ -102,5 +107,9 @@ export const vendors = {
     const count = await collection.countDocuments();
 
     return count;
+  },
+  categories: async (_args, { client }: Context): Promise<string[]> => {
+    const categories = await client.db('shops').collection('shops').distinct('categories');
+    return categories;
   },
 };

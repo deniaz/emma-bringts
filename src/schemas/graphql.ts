@@ -6,6 +6,7 @@ export type VendorInput = {
     service?: Service[];
     zip?: number;
     tenants?: Tenant[];
+    categories?: string[];
   };
   skip?: number;
   limit?: number;
@@ -13,6 +14,7 @@ export type VendorInput = {
 
 export const schema = buildSchema(`
   input VendorFilterInput {
+    categories: [String]
     service: [Service!]
     zip: Int
     tenants: [Tenant!]
@@ -70,6 +72,7 @@ export const schema = buildSchema(`
 
   type Query {
     vendors(filter: VendorFilterInput, skip: Int, limit: Int): [Vendor]!
+    categories: [String]!
     total: Int!
   }
 `);
