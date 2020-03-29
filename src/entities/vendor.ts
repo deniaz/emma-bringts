@@ -2,7 +2,7 @@ export type Service = 'TAKEAWAY' | 'DELIVERY_MAIL' | 'DELIVERY' | 'SELF_SERVICE'
 
 export type Order = 'PHONE' | 'EMAIL' | 'WEBSITE';
 
-export type Tenant = 'EMMA' | 'SFY' | 'BELOCALHERO'| 'LOKALLOYAL';
+export type Tenant = 'EMMA' | 'SFY' | 'BELOCALHERO' | 'LOKALLOYAL' | 'LAEDELISHOP';
 
 type VendorData = {
   name: string;
