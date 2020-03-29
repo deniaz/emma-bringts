@@ -102,14 +102,7 @@ export const vendors = {
       ...doc,
     }));
   },
-  total: async (_args, { client }: Context): Promise<number> => {
-    const collection = client.db('shops').collection('shops');
-    const count = await collection.countDocuments();
-
-    return count;
-  },
-  categories: async (_args, { client }: Context): Promise<string[]> => {
-    const categories = await client.db('shops').collection('shops').distinct('categories');
-    return categories;
-  },
+  total: async (_args, { client }: Context): Promise<number> => client.db('shops').collection('shops').countDocuments(),
+  categories: async (_args, { client }: Context): Promise<string[]> =>
+    client.db('shops').collection('shops').distinct('categories'),
 };
