@@ -107,8 +107,7 @@ export const SearchWithResults: FC<Props> = ({ query, categories }) => {
       ));
     },
     ({ data }) => {
-      const offset = data && data.vendors ? data.vendors.length : 0;
-      return offset;
+      return data && data.vendors ? data.vendors.length : 0;
     },
     [zip, service, tenants, categoryFilter]
   );
