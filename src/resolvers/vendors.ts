@@ -4,6 +4,7 @@ import { Context } from '../pages/api/graphql';
 import { VendorInput } from '../schemas/graphql';
 
 const API_KEY = process.env.OPENCAGEDATA_API_KEY;
+const ALLOWED_TENANTS = ['EMMA', 'SFY'];
 
 const buildQuery = async ({ service, tenants, zip, categories }: VendorInput['filter']) => {
   const criteria = {};
@@ -14,11 +15,9 @@ const buildQuery = async ({ service, tenants, zip, categories }: VendorInput['fi
     };
   }
 
-  if (tenants) {
-    criteria['tenant'] = {
-      $in: tenants,
-    };
-  }
+  criteria['tenant'] = {
+    $in: tenants || ALLOWED_TENANTS,
+  };
 
   if (categories && categories.length > 0) {
     criteria['categories'] = {
