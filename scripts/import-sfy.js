@@ -45,8 +45,10 @@ const mapVendor = (doc) => ({
   service: toArray(doc.service).filter(isValidService).map(toService),
   body: doc.body,
   address: [doc.address, `${doc.zip} ${doc.locality}`],
-  categories: toArray(doc.category).map(trim),
-  contact: [doc.email, doc.phone, doc.website].map(trim).filter((el) => el != ''),
+  categories: toArray(doc.category)
+    .map(trim)
+    .filter((el) => el !== ''),
+  contact: [doc.email, doc.phone, doc.website].map(trim).filter((el) => el !== ''),
   hours: toArray(doc.hours).map(trim),
   order: toArray(doc.order).map(trim),
   region: doc.region,
