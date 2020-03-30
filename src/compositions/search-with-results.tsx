@@ -35,15 +35,16 @@ const getVendors = `query Vendors($service: [Service!], $zip: Int, $tenants: [Te
 
 type Props = {
   query: ParsedUrlQuery;
-  categories: string[];
+  categories?: string[];
+  selectedCategory?: string;
 };
 
-export const SearchWithResults: FC<Props> = ({ query, categories }) => {
+export const SearchWithResults: FC<Props> = ({ query, categories, selectedCategory }) => {
   const tenants = query['tenants'] && query['tenants'];
 
   const [service, setService] = useState<'DELIVERY' | 'TAKEAWAY'>('TAKEAWAY');
   const [zip, setZip] = useState<string>('');
-  const [categoryFilter, setCategoryFilter] = useState<string[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState<string[]>(selectedCategory ? [selectedCategory] : []);
 
   const [, postcode] = useGetCurrentPosition();
 
@@ -116,25 +117,30 @@ export const SearchWithResults: FC<Props> = ({ query, categories }) => {
     <>
       <Search onChange={(zip) => setZip(zip)} onToggle={(service) => setService(service)} service={service} zip={zip} />
 
-      <div>
-        <Selection
-          label="Filtern nach Kategorie"
-          onChange={(event) =>
-            categoryFilter.includes(event.target.value)
-              ? setCategoryFilter(categoryFilter.filter((category) => category !== event.target.value))
-              : setCategoryFilter([...categoryFilter, event.target.value])
-          }
-          options={categories.map((category) => ({
-            label: category,
-            value: category,
-            name: 'category',
-            checked: categoryFilter.includes(category),
-          }))}
-        />
-      </div>
+      {categories && (
+        <div>
+          <Selection
+            label="Filtern nach Kategorie"
+            onChange={(event) =>
+              categoryFilter.includes(event.target.value)
+                ? setCategoryFilter(categoryFilter.filter((category) => category !== event.target.value))
+                : setCategoryFilter([...categoryFilter, event.target.value])
+            }
+            options={categories.map((category) => ({
+              label: category,
+              value: category,
+              name: 'category',
+              checked: categoryFilter.includes(category),
+            }))}
+          />
+        </div>
+      )}
 
       <header className={styles.header}>
-        <Headline>Händler{zip && ` in ${zip}`}</Headline>
+        <Headline>
+          Händler{selectedCategory && ` von ${selectedCategory}`}
+          {zip && ` in der Nähe von ${zip}`}
+        </Headline>
       </header>
       {pages}
       <div className={styles.button}>
