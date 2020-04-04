@@ -25,10 +25,10 @@ export const Vendor: FC<Props> = ({ name, body, categories, hours, address, cont
         <div className="label">Zeiten</div>
         <p className="time">
           {hours.map((hour) => (
-            <>
+            <Fragment key={hour}>
               {hour}
               <br />
-            </>
+            </Fragment>
           ))}
         </p>
       </div>
@@ -48,10 +48,10 @@ export const Vendor: FC<Props> = ({ name, body, categories, hours, address, cont
           rel="noopener noreferrer"
         >
           {address.map((el) => (
-            <>
+            <Fragment key={el}>
               {el}
               <br />
-            </>
+            </Fragment>
           ))}
         </a>
       </div>
