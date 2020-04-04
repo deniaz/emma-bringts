@@ -30,16 +30,16 @@ const getVendors = `query Vendors($service: [Service!], $zip: Int, $tenants: [Te
     order
     contact
   }
+  categories(filter:{service: $service, tenants: $tenants, zip: $zip})
   total
 }`;
 
 type Props = {
   query: ParsedUrlQuery;
-  categories?: string[];
   selectedCategory?: string;
 };
 
-export const SearchWithResults: FC<Props> = ({ query, categories, selectedCategory }) => {
+export const SearchWithResults: FC<Props> = ({ query, selectedCategory }) => {
   const tenants = query['tenants'] && query['tenants'];
 
   const [service, setService] = useState<'DELIVERY' | 'TAKEAWAY'>('TAKEAWAY');
@@ -64,7 +64,7 @@ export const SearchWithResults: FC<Props> = ({ query, categories, selectedCatego
     }
   }, [postcode]);
 
-  const { pages, isLoadingMore, isReachingEnd, loadMore } = useSWRPages(
+  const { pages, isLoadingMore, pageSWRs, isReachingEnd, loadMore } = useSWRPages(
     'results',
     ({ offset, withSWR }) => {
       const variables = useMemo(() => {
@@ -113,6 +113,8 @@ export const SearchWithResults: FC<Props> = ({ query, categories, selectedCatego
     [zip, service, tenants, categoryFilter]
   );
 
+  const [page] = pageSWRs;
+  const categories = page?.data?.categories;
   return (
     <>
       <Search onChange={(zip) => setZip(zip)} onToggle={(service) => setService(service)} service={service} zip={zip} />

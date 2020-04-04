@@ -67,15 +67,13 @@ export const schema = buildSchema(`
     contact: [String]!
   }
 
-
-
   type Mutation {
     createVendor(vendor: VendorInput!): Vendor!
   }
 
   type Query {
     vendors(filter: VendorFilterInput, skip: Int, limit: Int): [Vendor]!
-    categories: [String]!
+    categories(filter: VendorFilterInput): [String]!
     total: Int!
   }
 `);

@@ -102,6 +102,10 @@ export const vendors = {
     }));
   },
   total: async (_args, { client }: Context): Promise<number> => client.db('shops').collection('shops').countDocuments(),
-  categories: async (_args, { client }: Context): Promise<string[]> =>
-    client.db('shops').collection('shops').distinct('categories'),
+  categories: async ({ filter = {} }: VendorInput, { client }: Context): Promise<string[]> => {
+    const query = await buildQuery(filter);
+    const categories = await client.db('shops').collection('shops').distinct('categories', query);
+
+    return categories;
+  },
 };
