@@ -39,7 +39,7 @@ export default ({ zip = '', categories = [] }) => {
   const { pages, pageSWRs, isLoadingMore, isReachingEnd, loadMore } = useSWRPages(
     'vendors',
     ({ offset, withSWR }) => {
-      if (!zip) {
+      if (!state.zip) {
         return null;
       }
 
