@@ -1,10 +1,18 @@
-import { FC, ReactNode } from 'react';
+import { FC, MouseEvent } from 'react';
 
 const styles = {
-  tag:
-    'font-sans rounded-full bg-indigo-400 text-white text-xs font-normal py-1 px-4 mr-1 mb-1 flex-row fill-current inline-flex',
+  default: 'relative bg-white rounded-full py-2 px-4 m-2 text-sm font-semibold',
+  active: 'relative bg-indigo-500 text-white rounded-full py-2 px-4 m-2 text-sm font-semibold',
 };
 
-type Props = { children: ReactNode };
+type Props = {
+  active?: boolean;
+  label: string;
+  onClick?(e: MouseEvent<HTMLButtonElement>): void;
+};
 
-export const Tag: FC<Props> = ({ children }) => <span className={styles.tag}>{children}</span>;
+export const Tag: FC<Props> = ({ active = false, label, onClick }) => (
+  <button onClick={onClick} className={active ? styles.active : styles.default}>
+    {label}
+  </button>
+);

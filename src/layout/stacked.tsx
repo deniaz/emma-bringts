@@ -8,7 +8,7 @@ type Props = {
   title: string;
 };
 
-const styles = { container: 'bg-gray-100 box-border', main: 'py-8 max-w-screen-xl mx-auto box-border' };
+const styles = { container: 'text-gray-900' };
 
 export const Stacked: FC<Props> = ({ children, title }) => {
   useEffect(() => {
@@ -24,6 +24,7 @@ export const Stacked: FC<Props> = ({ children, title }) => {
 
     gtag('config', 'UA-161893117-1');
   }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -35,9 +36,8 @@ export const Stacked: FC<Props> = ({ children, title }) => {
 
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161893117-1" />
       </Head>
-      <Header />
-      <main className={styles.main}>{children}</main>
-      <Footer />
+
+      <main>{children}</main>
     </div>
   );
 };
