@@ -1,18 +1,15 @@
 import { FC, Fragment, ReactNode } from 'react';
 
 type Props = {
-  title: string;
-  tags: string[];
-  region: string;
+  name: string;
   body: string;
   categories: string[];
   address?: string[];
   hours: string[];
-  options: string[];
   contact: string[];
 };
 
-export const Vendor: FC<Props> = ({ title, tags, region, body, categories, hours, address, options, contact }) => (
+export const Vendor: FC<Props> = ({ name, body, categories, hours, address, contact }) => (
   <div className="search-results-item">
     <header className="header">
       {categories.map((category) => (
@@ -23,7 +20,7 @@ export const Vendor: FC<Props> = ({ title, tags, region, body, categories, hours
     </header>
     <div className="content">
       <div className="info">
-        <h3>{title}</h3>
+        <h3>{name}</h3>
         <p className="description">{body}</p>
         <div className="label">Zeiten</div>
         <p className="time">

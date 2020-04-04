@@ -18,11 +18,9 @@ const query = `query Vendors($service: [Service!], $zip: Int, $tenants: [Tenant!
     name
     categories
     body
-    region
     service
     hours
     address
-    order
     contact
   }
   categories(filter:{service: $service, tenants: $tenants, zip: $zip})
@@ -62,19 +60,8 @@ export default ({ zip = '', categories = [] }) => {
 
       const { vendors } = data;
 
-      return vendors.map(({ name, id, categories, contact, hours, address, body, order, region, service }) => (
-        <Vendor
-          key={id}
-          title={name}
-          region={region}
-          tags={service}
-          body={body}
-          categories={categories}
-          hours={hours}
-          address={address}
-          options={order}
-          contact={contact}
-        />
+      return vendors.map(({ name, id, categories, contact, hours, address, body }) => (
+        <Vendor key={id} name={name} body={body} categories={categories} hours={hours} address={address} contact={contact} />
       ));
     },
     ({ data }) => (data && data.vendors ? data.vendors.length : 0),

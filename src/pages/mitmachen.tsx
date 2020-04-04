@@ -1,11 +1,11 @@
 import request from 'graphql-request';
 import { ChangeEvent, FormEvent, useReducer, useState } from 'react';
+import { Vendor } from '../components/vendor';
 import { Selection } from '../compositions/selection';
-import { VendorList } from '../compositions/vendor-list';
 import { Button } from '../elements/button';
 import { Input } from '../elements/input';
 import { Textarea } from '../elements/textarea';
-import { Vendor } from '../entities/vendor';
+import { Vendor as VendorType } from '../entities/vendor';
 import { Stacked } from '../layout/stacked';
 
 type Targetable = HTMLInputElement | HTMLTextAreaElement;
@@ -83,7 +83,7 @@ export default () => {
 
   const [form, dispatch] = useReducer<Reducer<typeof initial>>(reduce, initial);
   const [status, setStatus] = useState<'pending' | 'success' | 'error'>(null);
-  const [vendor, setVendor] = useState<Vendor>(null);
+  const [vendor, setVendor] = useState<VendorType>(null);
 
   function handleChange(e: ChangeEvent<Targetable>) {
     e.persist();
@@ -141,7 +141,7 @@ export default () => {
         },
       };
 
-      const { createVendor } = await request<{ createVendor: Vendor }>('/api/graphql', mutation, variables);
+      const { createVendor } = await request<{ createVendor: VendorType }>('/api/graphql', mutation, variables);
       setStatus('success');
       setVendor(createVendor);
     } catch (error) {
@@ -184,7 +184,7 @@ export default () => {
         {status === 'success' && vendor !== null && (
           <div>
             <h3 className={styles.title}>Vielen Dank! Hier siehst du dein Angebot:</h3>
-            <VendorList vendors={[vendor]} />
+            <Vendor {...vendor} />
           </div>
         )}
         {status === 'error' && (
@@ -295,9 +295,7 @@ export default () => {
                 <Input label="Ort" name="locality" type="text" onChange={handleChange} value={form.locality} />
               </div>
             </div>
-            <Button disabled={status === 'pending'} type="submit">
-              {status === 'pending' ? 'Wird gespeichert...' : 'Angebot hinzufügen'}
-            </Button>
+            <Button>{status === 'pending' ? 'Wird gespeichert...' : 'Angebot hinzufügen'}</Button>
           </form>
         )}
       </div>

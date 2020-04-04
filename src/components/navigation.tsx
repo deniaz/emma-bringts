@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import Link from 'next/link';
 
 export const Navigation: FC = () => (
   <nav className="container emma-container navi">
@@ -24,18 +25,18 @@ export const Navigation: FC = () => (
       </button>
     </div>
     <div className="menu">
-      <a href="#" className="navi-item">
-        Was ist Emma?
-      </a>
-      <a href="#" className="navi-item">
-        Partner
-      </a>
-      <a href="#" className="navi-item">
-        Kontakt
-      </a>
-      <a href="#" className="btn">
-        Anbieter hinzufügen
-      </a>
+      <Link href="/initiative" passHref>
+        <a className="navi-item">Was ist Emma?</a>
+      </Link>
+      <Link href="/partner" passHref>
+        <a className="navi-item">Partner</a>
+      </Link>
+      <Link href="/kontakt" passHref>
+        <a className="navi-item">Kontakt</a>
+      </Link>
+      <Link href="/mitmachen" passHref>
+        <a className="btn">Anbieter hinzufügen</a>
+      </Link>
     </div>
   </nav>
 );

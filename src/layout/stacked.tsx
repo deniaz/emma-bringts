@@ -1,7 +1,5 @@
 import Head from 'next/head';
 import { FC, ReactNode, useEffect } from 'react';
-import { Footer } from '../components/footer';
-import { Header } from '../components/header';
 
 type Props = {
   children: ReactNode;

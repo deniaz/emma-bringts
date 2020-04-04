@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const Button: FC<Props> = ({ className, children, onClick }) => (
-  <button onClick={onClick} className={cn(className, styles.button)}>
+  <button onClick={onClick} className={cn([className, styles.button])}>
     {children}
   </button>
 );
