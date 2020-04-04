@@ -13,7 +13,7 @@ body {
 }
 
 h1 {
-  @apply text-3xl font-bold py-2 leading-tight;
+  @apply text-3xl font-extrabold py-2 leading-tight;
 }
 
 h3 {
