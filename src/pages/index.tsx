@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { useEffect, useMemo, useState } from 'react';
 import useSWR, { responseInterface, useSWRPages } from 'swr';
-import { Vendor } from '../components/vendor';
+import { ResultItem } from '../components/result-item';
 import { Hero } from '../compositions/hero';
 import { SearchResults } from '../compositions/search-results';
 import { Spinner } from '../elements/spinner';
@@ -27,6 +27,7 @@ const query = `query Vendors($service: [Service!], $zip: Int, $tenants: [Tenant!
     service
     hours
     address
+    service
     contact
   }
   categories(filter:{service: $service, tenants: $tenants, zip: $zip})
@@ -67,8 +68,17 @@ export default ({ zip = '', categories = [] }) => {
 
       const { vendors } = data;
 
-      return vendors.map(({ name, id, categories, contact, hours, address, body }) => (
-        <Vendor key={id} name={name} body={body} categories={categories} hours={hours} address={address} contact={contact} />
+      return vendors.map(({ name, id, categories, contact, hours, address, service, body }) => (
+        <ResultItem
+          key={id}
+          name={name}
+          body={body}
+          categories={categories}
+          hours={hours}
+          services={service}
+          address={address}
+          contact={contact}
+        />
       ));
     },
     ({ data }) => (data && data.vendors ? data.vendors.length : 0),

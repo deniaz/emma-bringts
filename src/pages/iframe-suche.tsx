@@ -1,8 +1,9 @@
 import { GetServerSideProps } from 'next';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useSWR, { responseInterface, useSWRPages } from 'swr';
-import { Vendor } from '../components/vendor';
+import { ResultItem } from '../components/result-item';
 import { SearchResults } from '../compositions/search-results';
+import { Spinner } from '../elements/spinner';
 import { Tag } from '../elements/tag';
 import { ZipSearch } from '../elements/zip-search';
 import { Vendor as VendorType } from '../entities/vendor';
@@ -14,6 +15,7 @@ import cn from '../utils/classname';
 
 const styles = {
   hero: 'py-16',
+  spinner: 'fill-current align-center inline-flex',
 };
 
 const query = `query Vendors($service: [Service!], $zip: Int, $tenants: [Tenant!], $categories: [String], $skip: Int!, $limit: Int!) {
@@ -24,6 +26,7 @@ const query = `query Vendors($service: [Service!], $zip: Int, $tenants: [Tenant!
       body
       service
       hours
+      service
       address
       contact
     }
@@ -35,14 +38,11 @@ export default ({ zip = '', categories = [], tenants = [] }) => {
   const initial = { zip, categories, tenants };
   const [state, dispatch] = useQueryParamState(initial);
   const [, postcode] = useGetCurrentPosition();
+  const [search, setSearch] = useState<'idle' | 'pending' | 'success' | 'error'>('idle');
 
   const { pages, isLoadingMore, isReachingEnd, loadMore } = useSWRPages(
     'vendors',
     ({ offset, withSWR }) => {
-      if (!state.zip) {
-        return null;
-      }
-
       const variables = useMemo(() => {
         const params = { categories: state.categories, tenants: state.tenants, limit: 10, skip: offset || 0 };
 
@@ -64,8 +64,17 @@ export default ({ zip = '', categories = [], tenants = [] }) => {
 
       const { vendors } = data;
 
-      return vendors.map(({ name, id, categories, contact, hours, address, body }) => (
-        <Vendor key={id} name={name} body={body} categories={categories} hours={hours} address={address} contact={contact} />
+      return vendors.map(({ name, id, categories, contact, hours, address, service, body }) => (
+        <ResultItem
+          key={id}
+          name={name}
+          body={body}
+          categories={categories}
+          hours={hours}
+          address={address}
+          services={service}
+          contact={contact}
+        />
       ));
     },
     ({ data }) => (data && data.vendors ? data.vendors.length : 0),
@@ -82,12 +91,21 @@ export default ({ zip = '', categories = [], tenants = [] }) => {
     }
   }, [postcode]);
 
+  useEffect(() => {
+    if (!isLoadingMore) {
+      setSearch('idle');
+    }
+  }, [isLoadingMore]);
+
   function submit(value: string) {
-    dispatch({
-      type: 'SET',
-      key: 'zip',
-      value,
-    });
+    if (value.length === 4 && value !== state.zip) {
+      dispatch({
+        type: 'SET',
+        key: 'zip',
+        value,
+      });
+      setSearch('pending');
+    }
   }
 
   function toggleFilter(filter: string) {
@@ -104,7 +122,9 @@ export default ({ zip = '', categories = [], tenants = [] }) => {
     <Stacked title="Emma bringts! - Ein Verzeichnis von Unternehmen mit Abhol- oder Lieferservice.">
       <div className={cn(['hero-section', styles.hero])}>
         <div className="container emma-container">
-          <ZipSearch initial={state.zip} onChange={submit} />
+          <ZipSearch initial={state.zip} onChange={submit}>
+            {search === 'pending' ? <Spinner className={styles.spinner} size={24} /> : 'Anbieter finden'}
+          </ZipSearch>
         </div>
 
         <div className="container category-outer">

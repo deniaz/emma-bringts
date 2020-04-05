@@ -1,6 +1,6 @@
 import request from 'graphql-request';
 import { ChangeEvent, FormEvent, useReducer, useState } from 'react';
-import { Vendor } from '../components/vendor';
+import { ResultItem } from '../components/result-item';
 import { Selection } from '../compositions/selection';
 import { Button } from '../elements/button';
 import { Input } from '../elements/input';
@@ -184,7 +184,7 @@ export default () => {
         {status === 'success' && vendor !== null && (
           <div>
             <h3 className={styles.title}>Vielen Dank! Hier siehst du dein Angebot:</h3>
-            <Vendor {...vendor} />
+            <ResultItem services={vendor.service} {...vendor} />
           </div>
         )}
         {status === 'error' && (
