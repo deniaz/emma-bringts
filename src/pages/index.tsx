@@ -32,7 +32,11 @@ export default ({ zip = '', categories = [] }) => {
         search={
           <div className={styles.zipContainer}>
             <ZipSearch initial={state.zip} onChange={submit}>
-              {state.search === 'pending' ? <Spinner className={styles.spinner} size={24} /> : 'Anbieter finden'}
+              {isLoadingMore && state.search === 'pending' ? (
+                <Spinner className={styles.spinner} size={24} />
+              ) : (
+                'Anbieter finden'
+              )}
             </ZipSearch>
           </div>
         }
