@@ -1,66 +1,106 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { Card } from '../components/card';
-import { Search } from '../components/search';
-import { Intro } from '../compositions/intro';
-import { Button } from '../elements/button';
-import { useGetCurrentPosition } from '../hooks/use-get-current-position';
-import { BodyText } from '../identity/typography/body-text';
-import { Headline } from '../identity/typography/headline';
+import { GetServerSideProps } from 'next';
+import { Hero } from '../compositions/hero';
+import { SearchResults } from '../compositions/search-results';
+import { Spinner } from '../elements/spinner';
+import { Tag } from '../elements/tag';
+import { ZipSearch } from '../elements/zip-search';
+import { getArrayFromQuery } from '../hooks/use-query-param-state';
+import { useStatefulSearch } from '../hooks/use-stateful-search';
 import { Stacked } from '../layout/stacked';
 
 const styles = {
-  label: 'text-center font-sans',
-  search: 'py-4',
+  zipContainer: 'my-20',
+  spinner: 'fill-current align-center inline-flex',
 };
 
-export default () => {
-  const [service, setService] = useState<'DELIVERY' | 'TAKEAWAY'>('TAKEAWAY');
-  const [zip, setZip] = useState<string>('');
-
-  const [, postcode] = useGetCurrentPosition();
-  const router = useRouter();
-
-  function dispatch() {
-    const baseUrl = `/suche?services=${service}`;
-    const fullUrl = zip ? `${baseUrl}&zip=${zip}` : baseUrl;
-
-    router.push(fullUrl);
-  }
-
-  useEffect(() => {
-    if (zip === '' && postcode !== '') {
-      setZip(postcode);
-    }
-  }, [postcode]);
+export default ({ zip = '', categories = [] }) => {
+  const requireZip = true;
+  const [
+    { state, total, pages, isReachingEnd, hasData, isLoadingMore },
+    { submit, loadMore, toggleFilter },
+  ] = useStatefulSearch(
+    {
+      zip,
+      categories,
+    },
+    requireZip
+  );
 
   return (
     <Stacked title="Emma bringts! - Ein Verzeichnis von Unternehmen mit Abhol- oder Lieferservice.">
-      <Intro />
-
-      <p className={styles.label}>Finde Angebote in deiner Nähe </p>
-      <Search
-        onChange={(zip) => setZip(zip)}
-        onToggle={(service) => setService(service)}
-        service={service}
-        zip={zip}
-        onClick={dispatch}
-        className={styles.search}
-      />
-
-      <Card
-        action={
-          <Link href="/mitmachen" passHref>
-            <Button type="link">Mitmachen</Button>
-          </Link>
+      <Hero
+        search={
+          <div className={styles.zipContainer}>
+            <ZipSearch initial={state.zip} onChange={submit}>
+              {state.search === 'pending' ? <Spinner className={styles.spinner} size={24} /> : 'Anbieter finden'}
+            </ZipSearch>
+          </div>
         }
+        title={`${total ? `${total} ` : ''}Angebote${zip && ` in der Region ${zip}`}`}
       >
-        <Headline>Hat dein Geschäft noch geöffnet?</Headline>
-        <BodyText>
-          Mit deinem Eintrag auf Emma bringts! ist dein Abhol- oder Lieferservice für alle klar ersichtlich.
-        </BodyText>
-      </Card>
+        {/* eslint-disable-next-line @typescript-eslint/no-use-before-define */}
+        {filters.map(({ label, value }) => (
+          <Tag active={state.categories.includes(value)} key={value} label={label} onClick={() => toggleFilter(value)} />
+        ))}
+        <a href="#" className="category-item">
+          Alle anzeigen
+        </a>
+      </Hero>
+      <SearchResults>
+        {pages}
+        {!isReachingEnd && hasData && (
+          <button onClick={loadMore} className="btn m-auto block max-w-xs">
+            {isLoadingMore ? <Spinner className={styles.spinner} size={24} /> : 'Mehr anzeigen'}
+          </button>
+        )}
+      </SearchResults>
     </Stacked>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { zip } = query;
+  const categories = getArrayFromQuery(query, 'categories');
+
+  if (zip) {
+    return {
+      props: {
+        zip,
+        categories,
+      },
+    };
+  }
+
+  return {
+    props: {
+      categories,
+    },
+  };
+};
+
+const filters = [
+  {
+    label: '🥖 Backwaren',
+    value: 'Backwaren',
+  },
+  {
+    label: '🥩 Fleischwaren',
+    value: 'Fleischwaren',
+  },
+  {
+    label: '🥦 Gemüse / Früchte',
+    value: 'Gemüse / Früchte',
+  },
+  {
+    label: '🌾 Grundnahrungsmittel',
+    value: 'Grundnahrungsmittel',
+  },
+  {
+    label: '🍝 Mahlzeiten',
+    value: 'Mahlzeiten',
+  },
+  {
+    label: '🍷 Spirituosen',
+    value: 'Spirituosen',
+  },
+];

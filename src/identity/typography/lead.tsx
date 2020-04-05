@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 
 const styles = {
-  text: 'font-sans text-2xl font-thin tracking-tight mb-4',
+  text: 'font-sans text-gray-900 text-base font-medium md:text-lg',
 };
 
 type Props = { children: ReactNode };

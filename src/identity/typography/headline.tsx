@@ -1,7 +1,12 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
+import cn from '../../utils/classname';
 
 const styles = {
-  title: 'font-sans text-indigo-900 text-2xl font-bold mb-4',
+  title: 'text-2xl font-bold leading-tight md:text-2xl',
 };
 
-export const Headline: FC = ({ children }) => <h3 className={styles.title}>{children}</h3>;
+type Props = { children: ReactNode; className?: string };
+
+export const Headline: FC<Props> = ({ children, className }) => (
+  <h3 className={cn([styles.title, className])}>{children}</h3>
+);
