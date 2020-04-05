@@ -3,9 +3,11 @@ import Link from 'next/link';
 
 export const Navigation: FC = () => (
   <nav className="container emma-container navi">
-    <div className="logo">
-      <img src="/img/logo-black.svg" alt="Workcation" />
-    </div>
+    <Link href="/" passHref>
+      <a className="logo">
+        <img src="/img/logo-black.svg" alt="Workcation" />
+      </a>
+    </Link>
     <div className="menu-icon">
       <button>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
