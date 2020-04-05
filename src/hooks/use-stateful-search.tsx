@@ -17,6 +17,7 @@ const query = `query Vendors($service: [Service!], $zip: Int, $tenants: [Tenant!
     address
     service
     contact
+    tenant
   }
   categories(filter:{service: $service, tenants: $tenants, zip: $zip})
   total
@@ -66,7 +67,7 @@ export function useStatefulSearch({ zip = '', categories = [], tenants }: Params
 
       const { vendors } = data;
 
-      return vendors.map(({ name, id, categories, contact, hours, address, service, body }) => (
+      return vendors.map(({ name, id, categories, contact, hours, address, service, tenant, body }) => (
         <ResultItem
           key={id}
           name={name}
@@ -76,6 +77,7 @@ export function useStatefulSearch({ zip = '', categories = [], tenants }: Params
           services={service}
           address={address}
           contact={contact}
+          tenant={tenant}
         />
       ));
     },
