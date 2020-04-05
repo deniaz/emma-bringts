@@ -16,6 +16,10 @@ h1 {
   @apply text-3xl font-extrabold py-2 leading-tight;
 }
 
+h2 {
+  @apply text-2xl font-bold leading-tight mb-6;
+}
+
 h3 {
   @apply text-2xl font-bold leading-tight;
 }
@@ -24,8 +28,13 @@ a {
   @apply text-emma-purple-800;
 }
 
+
 .label {
-  @apply text-gray-800;
+  @apply text-gray-800 font-semibold py-2 block;
+}
+
+.input-info {
+  @apply text-gray-800 font-normal text-sm block pb-2;
 }
 
 .emma-container {
