@@ -99,7 +99,7 @@ export function useStatefulSearch({ zip = '', categories = [], tenants }: Params
     if (!isLoadingMore) {
       setSearch('idle');
     }
-  }, [isLoadingMore]);
+  });
 
   function submit(value: string) {
     if (value.length === 4 && value !== state.zip) {

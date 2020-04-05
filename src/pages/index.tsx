@@ -32,7 +32,11 @@ export default ({ zip = '', categories = [] }) => {
         search={
           <div className={styles.zipContainer}>
             <ZipSearch initial={state.zip} onChange={submit}>
-              {state.search === 'pending' ? <Spinner className={styles.spinner} size={24} /> : 'Anbieter finden'}
+              {isLoadingMore && state.search === 'pending' ? (
+                <Spinner className={styles.spinner} size={24} />
+              ) : (
+                'Anbieter finden'
+              )}
             </ZipSearch>
           </div>
         }
@@ -42,9 +46,6 @@ export default ({ zip = '', categories = [] }) => {
         {filters.map(({ label, value }) => (
           <Tag active={state.categories.includes(value)} key={value} label={label} onClick={() => toggleFilter(value)} />
         ))}
-        <a href="#" className="category-item">
-          Alle anzeigen
-        </a>
       </Hero>
       <SearchResults>
         {pages}
