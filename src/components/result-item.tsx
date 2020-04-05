@@ -90,16 +90,16 @@ export const ResultItem: FC<Props> = ({ name, body, categories, hours, address, 
         </div>
       </aside>
     </div>
-    <footer className={styles.footer}>
-      {tenant === 'SFY' && (
+    {tenant === 'SFY' && (
+      <footer className={styles.footer}>
         <p>
           👏 In Zusammenarbeit mit{' '}
           <a href="http://www.slowfoodyouth.ch" className="" title="Herzlichen Dank an Slow Food Youth">
             Slow Food Youth
           </a>
         </p>
-      )}
-    </footer>
+      </footer>
+    )}
   </div>
 );
 
