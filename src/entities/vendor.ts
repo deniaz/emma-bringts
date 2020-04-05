@@ -15,14 +15,16 @@ type VendorData = {
   order: Order[];
   contact: string[];
   tenant: Tenant;
+  location?: Location;
+};
+
+type Location = {
+  type: 'Point';
+  coordinates: [number, number];
 };
 
 export type MongoVendor = {
   _id: string;
-  location?: {
-    type: 'Point';
-    coordinates: [number, number];
-  };
 } & VendorData;
 
 export type Vendor = {

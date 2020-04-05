@@ -1,4 +1,5 @@
 import { FC, Fragment, ReactNode } from 'react';
+import { Distance } from '../elements/distance';
 import { Hyperlink } from '../elements/hyperlink';
 import { Tag } from '../elements/tag';
 import { Icon, IconName } from '../identity/icon';
@@ -52,6 +53,8 @@ const styles = {
   offer: 'font-sans break-word mt-2 mb-8 flex-grow-0',
   region: 'font-sans text-gray-500 fill-current text-base font-light tracking-tight inline-flex flex-row items-center mb-4',
   regionIcon: 'mr-2 flex-shrink-0',
+  distance:
+    'font-sans text-gray-500 fill-current text-base font-light tracking-tight inline-flex flex-row items-center mb-4',
   tags: 'my-2 flex flex-wrap',
 
   col: 'flex flex-col lg:flex-row w-full box-border',
@@ -76,9 +79,23 @@ type Props = {
   hours: string[];
   options: string[];
   contact: string[];
+  coordinates?: number[];
+  userCoordinates?: number[];
 };
 
-export const Vendor: FC<Props> = ({ title, tags, region, body, categories, hours, address, options, contact }) => (
+export const Vendor: FC<Props> = ({
+  title,
+  tags,
+  region,
+  body,
+  categories,
+  hours,
+  address,
+  options,
+  contact,
+  coordinates,
+  userCoordinates,
+}) => (
   <li className={styles.listing}>
     {/* <img
         className={styles.img}
@@ -118,6 +135,18 @@ export const Vendor: FC<Props> = ({ title, tags, region, body, categories, hours
         <h3 className={styles.region}>
           <Icon className={styles.regionIcon} name="place" size={16} /> <span>{region}</span>
         </h3>
+
+        {coordinates && userCoordinates && (
+          <div>
+            <Distance
+              className={styles.distance}
+              userLat={userCoordinates[0]}
+              userLon={userCoordinates[1]}
+              vendorLat={coordinates[0]}
+              vendorLon={coordinates[1]}
+            />
+          </div>
+        )}
 
         {address && (
           <div className={styles.attribute}>

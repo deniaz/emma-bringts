@@ -41,6 +41,11 @@ export const schema = buildSchema(`
     LAEDELISHOP
   }
 
+  type Location {
+    type: String!
+    coordinates: [Float!]!
+  }
+
   type Vendor {
     id: String!
     name: String!
@@ -53,6 +58,7 @@ export const schema = buildSchema(`
     order: [Order]!
     contact: [String]!
     tenant: String!
+    location: Location
   }
 
   input VendorInput {
