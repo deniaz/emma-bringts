@@ -46,9 +46,6 @@ export default ({ zip = '', categories = [] }) => {
         {filters.map(({ label, value }) => (
           <Tag active={state.categories.includes(value)} key={value} label={label} onClick={() => toggleFilter(value)} />
         ))}
-        <a href="#" className="category-item">
-          Alle anzeigen
-        </a>
       </Hero>
       <SearchResults>
         {pages}

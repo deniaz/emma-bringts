@@ -35,9 +35,6 @@ export default ({ zip = '', categories = [], tenants = [] }) => {
             {filters.map(({ label, value }) => (
               <Tag active={state.categories.includes(value)} key={value} label={label} onClick={() => toggleFilter(value)} />
             ))}
-            <a href="#" className="category-item">
-              Alle anzeigen
-            </a>
           </div>
         </div>
       </div>
