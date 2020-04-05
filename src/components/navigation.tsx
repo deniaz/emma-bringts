@@ -8,7 +8,7 @@ export const Navigation: FC = () => (
         <img src="/img/logo-black.svg" alt="Workcation" />
       </a>
     </Link>
-    <div className="menu-icon">
+    {/*<div className="menu-icon">
       <button>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -25,7 +25,7 @@ export const Navigation: FC = () => (
           />
         </svg>
       </button>
-    </div>
+</div>*/}
     <div className="menu">
       <Link href="/initiative" passHref>
         <a className="navi-item">Was ist Emma?</a>
