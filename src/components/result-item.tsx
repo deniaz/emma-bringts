@@ -18,7 +18,7 @@ const styles = {
   label: 'text-gray-800',
   delivery: '',
   contact: '',
-  link: 'font-normal font-base text-indigo-900 mb-4',
+  link: 'font-normal font-base text-indigo-900 mb-4 inline-block',
 };
 
 type Props = {
@@ -127,7 +127,7 @@ const getLink = (el: string): ReactNode => {
     );
   }
 
-  return el;
+  return <span className={styles.link}>{el}</span>;
 };
 
 enum ServiceMethod {

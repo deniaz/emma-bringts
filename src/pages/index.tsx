@@ -1,131 +1,30 @@
 import { GetServerSideProps } from 'next';
-import { useEffect, useMemo, useState } from 'react';
-import useSWR, { responseInterface, useSWRPages } from 'swr';
-import { ResultItem } from '../components/result-item';
 import { Hero } from '../compositions/hero';
 import { SearchResults } from '../compositions/search-results';
 import { Spinner } from '../elements/spinner';
 import { Tag } from '../elements/tag';
 import { ZipSearch } from '../elements/zip-search';
-import { Vendor as VendorType } from '../entities/vendor';
-import { useGetCurrentPosition } from '../hooks/use-get-current-position';
-import { getArrayFromQuery, useQueryParamState } from '../hooks/use-query-param-state';
+import { getArrayFromQuery } from '../hooks/use-query-param-state';
+import { useStatefulSearch } from '../hooks/use-stateful-search';
 import { Stacked } from '../layout/stacked';
-import { fetcher } from '../services/api';
 
 const styles = {
   zipContainer: 'my-20',
   spinner: 'fill-current align-center inline-flex',
 };
 
-const query = `query Vendors($service: [Service!], $zip: Int, $tenants: [Tenant!], $categories: [String], $skip: Int!, $limit: Int!) {
-  vendors(filter: {service: $service, tenants: $tenants, zip: $zip, categories: $categories}, skip: $skip, limit: $limit) {
-    id
-    name
-    categories
-    body
-    service
-    hours
-    address
-    service
-    contact
-  }
-  categories(filter:{service: $service, tenants: $tenants, zip: $zip})
-  total
-}`;
-
 export default ({ zip = '', categories = [] }) => {
-  const initial = { zip, categories };
-  const [state, dispatch] = useQueryParamState(initial);
-  const [, postcode] = useGetCurrentPosition();
-  const [search, setSearch] = useState<'idle' | 'pending' | 'success' | 'error'>('idle');
-
-  const { pages, pageSWRs, isLoadingMore, isReachingEnd, loadMore } = useSWRPages(
-    'vendors',
-    ({ offset, withSWR }) => {
-      if (!state.zip) {
-        return null;
-      }
-
-      const variables = useMemo(() => {
-        const params = { categories: state.categories, limit: 10, skip: offset || 0 };
-
-        if (state.zip) {
-          params['zip'] = parseInt(state.zip, 10);
-        }
-
-        return params;
-      }, [state.zip, state.categories]);
-
-      const { data } = withSWR(useSWR([query, variables], fetcher)) as responseInterface<
-        { vendors: VendorType[]; total: number },
-        unknown
-      >;
-
-      if (!data) {
-        return null;
-      }
-
-      const { vendors } = data;
-
-      return vendors.map(({ name, id, categories, contact, hours, address, service, body }) => (
-        <ResultItem
-          key={id}
-          name={name}
-          body={body}
-          categories={categories}
-          hours={hours}
-          services={service}
-          address={address}
-          contact={contact}
-        />
-      ));
+  const requireZip = true;
+  const [
+    { state, total, pages, isReachingEnd, hasData, isLoadingMore },
+    { submit, loadMore, toggleFilter },
+  ] = useStatefulSearch(
+    {
+      zip,
+      categories,
     },
-    ({ data }) => (data && data.vendors ? data.vendors.length : 0),
-    [state.zip, state.categories]
+    requireZip
   );
-
-  useEffect(() => {
-    if (postcode) {
-      dispatch({
-        type: 'SET',
-        key: 'zip',
-        value: postcode,
-      });
-    }
-  }, [postcode]);
-
-  useEffect(() => {
-    if (!isLoadingMore) {
-      setSearch('idle');
-    }
-  }, [isLoadingMore]);
-
-  function submit(value: string) {
-    if (value.length === 4 && value !== state.zip) {
-      dispatch({
-        type: 'SET',
-        key: 'zip',
-        value,
-      });
-      setSearch('pending');
-    }
-  }
-
-  function toggleFilter(filter: string) {
-    dispatch({
-      type: 'SET',
-      key: 'categories',
-      value: state.categories.includes(filter)
-        ? state.categories.filter((category) => category !== filter)
-        : [...state.categories, filter],
-    });
-  }
-
-  const [page] = pageSWRs;
-  const total = page?.data?.total;
-  const hasData = !!pageSWRs[0]?.data;
-  console.info({ pages, pageSWRs, isLoadingMore, isReachingEnd });
 
   return (
     <Stacked title="Emma bringts! - Ein Verzeichnis von Unternehmen mit Abhol- oder Lieferservice.">
@@ -133,7 +32,7 @@ export default ({ zip = '', categories = [] }) => {
         search={
           <div className={styles.zipContainer}>
             <ZipSearch initial={state.zip} onChange={submit}>
-              {search === 'pending' ? <Spinner className={styles.spinner} size={24} /> : 'Anbieter finden'}
+              {state.search === 'pending' ? <Spinner className={styles.spinner} size={24} /> : 'Anbieter finden'}
             </ZipSearch>
           </div>
         }
