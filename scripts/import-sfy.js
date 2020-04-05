@@ -5,7 +5,7 @@ const { getGeoData } = require('./helpers');
 
 const API_KEY = process.env.OPENCAGEDATA_API_KEY;
 
-const file = './data/cleaned-sfy.csv';
+const file = './data/SFY 2020-04-05 - SFY 2020-04-05.csv';
 
 const isValidService = (service) =>
   ['Abholung', 'Lieferung per Post', 'Lieferung per Velo / Auto', 'Selbst ernten'].includes(service);
@@ -14,44 +14,33 @@ const toService = (service) => {
   switch (service) {
     case 'Abholung':
       return 'TAKEAWAY';
-    case 'Lieferung per Post':
+    case 'Lieferung':
       return 'DELIVERY_MAIL';
-    case 'Lieferung per Velo / Auto':
+    case 'Versand':
       return 'DELIVERY';
-    case 'Selbst ernten':
+    case 'Selbstbedienung':
       return 'SELF_SERVICE';
-  }
-};
-
-const isValidOrder = (order) => ['Telefon', 'E-Mail', 'Webseite'].includes(order);
-
-const toOrder = (order) => {
-  switch (order) {
-    case 'Telefon':
-      return 'PHONE';
-    case 'E-Mail':
-      return 'EMAIL';
-    case 'Webseite':
-      return 'WEBSITE';
   }
 };
 
 const trim = (text) => text.trim();
 const toArray = (text) => text.split(',');
+const lower = (text) => text.toLowerCase();
 
 // name,address,zip,locality,category,body,service,hours,order,email,phone,website
 const mapVendor = (doc) => ({
   name: doc.name,
-  service: toArray(doc.service).filter(isValidService).map(toService),
-  body: doc.body,
-  address: [doc.address, `${doc.zip} ${doc.locality}`],
-  categories: toArray(doc.category)
+  categories: toArray(doc.categories)
     .map(trim)
     .filter((el) => el !== ''),
-  contact: [doc.email, doc.phone, doc.website].map(trim).filter((el) => el !== ''),
+  body: doc.body,
+  service: toArray(doc.service).filter(isValidService).map(toService),
   hours: toArray(doc.hours).map(trim),
-  order: toArray(doc.order).map(trim),
-  region: doc.region,
+  address: toArray(doc.address).map(trim),
+  contact: [doc.email, doc.phone, doc.website]
+    .map(trim)
+    .filter((el) => el !== '')
+    .map(lower),
   tenant: 'SFY',
 });
 
