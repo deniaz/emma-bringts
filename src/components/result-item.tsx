@@ -93,7 +93,7 @@ export const ResultItem: FC<Props> = ({ name, body, categories, hours, address, 
     {tenant === 'SFY' && (
       <footer className={styles.footer}>
         <p>
-          👏 In Zusammenarbeit mit{' '}
+          In Zusammenarbeit mit{' '}
           <a href="http://www.slowfoodyouth.ch" className="" title="Herzlichen Dank an Slow Food Youth">
             Slow Food Youth
           </a>
