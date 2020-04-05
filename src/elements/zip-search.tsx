@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, ReactNode, useEffect, useState } from 'react';
 import { Button } from './button';
 
 const styles = { button: 'text-base px-3 py-4 w-7/12' };
@@ -6,9 +6,10 @@ const styles = { button: 'text-base px-3 py-4 w-7/12' };
 type Props = {
   initial?: string;
   onChange: (zip: string) => void;
+  children: ReactNode;
 };
 
-export const ZipSearch: FC<Props> = ({ initial = '', onChange }) => {
+export const ZipSearch: FC<Props> = ({ initial = '', onChange, children }) => {
   const [zip, setZip] = useState(initial);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export const ZipSearch: FC<Props> = ({ initial = '', onChange }) => {
         defaultValue={zip}
       />
       <Button className={styles.button} onClick={() => onChange(zip)}>
-        Anbieter finden
+        {children}
       </Button>
     </div>
   );

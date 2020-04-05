@@ -322,3 +322,16 @@ a {
     @apply w-1/3;
   }
 }
+
+@keyframes spinning {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.endless-spinning {
+  animation: spinning 1.5s linear infinite;
+}

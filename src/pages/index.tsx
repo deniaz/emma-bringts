@@ -1,9 +1,10 @@
 import { GetServerSideProps } from 'next';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useSWR, { responseInterface, useSWRPages } from 'swr';
 import { Vendor } from '../components/vendor';
 import { Hero } from '../compositions/hero';
 import { SearchResults } from '../compositions/search-results';
+import { Spinner } from '../elements/spinner';
 import { Tag } from '../elements/tag';
 import { ZipSearch } from '../elements/zip-search';
 import { Vendor as VendorType } from '../entities/vendor';
@@ -14,6 +15,7 @@ import { fetcher } from '../services/api';
 
 const styles = {
   zipContainer: 'my-20',
+  spinner: 'fill-current align-center inline-flex',
 };
 
 const query = `query Vendors($service: [Service!], $zip: Int, $tenants: [Tenant!], $categories: [String], $skip: Int!, $limit: Int!) {
@@ -35,6 +37,7 @@ export default ({ zip = '', categories = [] }) => {
   const initial = { zip, categories };
   const [state, dispatch] = useQueryParamState(initial);
   const [, postcode] = useGetCurrentPosition();
+  const [search, setSearch] = useState<'idle' | 'pending' | 'success' | 'error'>('idle');
 
   const { pages, pageSWRs, isLoadingMore, isReachingEnd, loadMore } = useSWRPages(
     'vendors',
@@ -82,12 +85,21 @@ export default ({ zip = '', categories = [] }) => {
     }
   }, [postcode]);
 
+  useEffect(() => {
+    if (!isLoadingMore) {
+      setSearch('idle');
+    }
+  }, [isLoadingMore]);
+
   function submit(value: string) {
-    dispatch({
-      type: 'SET',
-      key: 'zip',
-      value,
-    });
+    if (value.length === 4 && value !== state.zip) {
+      dispatch({
+        type: 'SET',
+        key: 'zip',
+        value,
+      });
+      setSearch('pending');
+    }
   }
 
   function toggleFilter(filter: string) {
@@ -102,13 +114,17 @@ export default ({ zip = '', categories = [] }) => {
 
   const [page] = pageSWRs;
   const total = page?.data?.total;
+  const hasData = !!pageSWRs[0]?.data;
+  console.info({ pages, pageSWRs, isLoadingMore, isReachingEnd });
 
   return (
     <Stacked title="Emma bringts! - Ein Verzeichnis von Unternehmen mit Abhol- oder Lieferservice.">
       <Hero
         search={
           <div className={styles.zipContainer}>
-            <ZipSearch initial={state.zip} onChange={submit} />
+            <ZipSearch initial={state.zip} onChange={submit}>
+              {search === 'pending' ? <Spinner className={styles.spinner} size={24} /> : 'Anbieter finden'}
+            </ZipSearch>
           </div>
         }
         title={`${total ? `${total} ` : ''}Angebote${zip && ` in der Region ${zip}`}`}
@@ -123,9 +139,9 @@ export default ({ zip = '', categories = [] }) => {
       </Hero>
       <SearchResults>
         {pages}
-        {!isReachingEnd && !isLoadingMore && (
+        {!isReachingEnd && hasData && (
           <button onClick={loadMore} className="btn m-auto block max-w-xs">
-            Mehr anzeigen
+            {isLoadingMore ? <Spinner className={styles.spinner} size={24} /> : 'Mehr anzeigen'}
           </button>
         )}
       </SearchResults>
