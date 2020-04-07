@@ -24,7 +24,7 @@ export const Hero: FC<Props> = ({ title, search, children }) => (
           </Lead>
         </div>
         <div className="img">
-          <img src="/img/hero-illu.svg" alt="" />
+          <img src="/img/illus/illu-hero.svg" alt="" />
         </div>
       </div>
 
