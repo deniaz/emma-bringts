@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const ContentBox: FC<Props> = ({ title, text, img, style }) => (
-  <div className={"content-secation " + style}> 
+  <div className={"content-secation"}> 
     <img src={img} alt="" />
     <div className="text">
       <h2>{title}</h2>

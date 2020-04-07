@@ -28,13 +28,13 @@ export const Navigation: FC = () => (
 </div>*/}
     <div className="menu">
       <Link href="/initiative" passHref>
-        <a className="navi-item">Emma hilft</a>
+        <a className="navi-item">Helft Emma</a>
       </Link>
       {/* <Link href="/partner" passHref>
         <a className="navi-item">Partner</a>
       </Link> */}
       <Link href="/unternehmen" passHref>
-        <a className="navi-item">Tipps für Unternehmen</a>
+        <a className="navi-item">Für Unternehmen</a>
       </Link>
       <Link href="/kontakt" passHref>
         <a className="navi-item">Kontakt</a>

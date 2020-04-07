@@ -106,7 +106,7 @@ p {
 ****/
 
 .hero-section {
-  @apply bg-emma-yellow-500;
+  @apply bg-emma-yellow-400;
 }
 
 .hero-stage {
@@ -315,7 +315,7 @@ p {
 }
 
 .content-secation.content-secation-hero {
-  @apply  bg-emma-yellow-400 flex-row-reverse items-center justify-between mb-0 mt-8 shadow-2xl overflow-scroll;
+  @apply  bg-emma-yellow-400 flex-row-reverse items-center justify-between mb-0 mt-8 overflow-scroll;
 }
 
 .content-secation h2 {
@@ -347,9 +347,13 @@ p {
   .content-secation img {
     @apply w-1/2 pr-16;
   }
+  
+  .content-secation.content-secation-hero {
+    @apply shadow-2xl ;
+  }
 
   .content-secation.content-secation-hero img {
-    @apply  pl-16 pr-0;
+    @apply pl-16 pr-0;
   }
   
 

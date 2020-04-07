@@ -21,16 +21,16 @@ export default () => (
 
         </section>
 
-        <section className="bg-emma-blue-400 lg:pt-16">
+        <section className="bg-emma-blue-400 lg:pt-16 flex">
             <div className="container emma-container content-page">
 
                 <ContentBox
                     title="Beratung trotz Social Distancing?"
                     text={[
                         'Es ist natürlich klar: Am einfachsten ist es, wenn deine Kunden direkt zu dir ins Geschäft kommen. Aber neue Situationen erfordern neue Wege. Daher haben wir hier ein paar Ideen wie du deinen Kunden trotz Social Distancing eine optimale Beratung bieten kannst:',
-                        'Mit <strong>Whatsapp</strong> bist du in Echtzeit für deine Kunden erreichbar und kannst super einfach Fotos und Videos austauschen. Du willst direkt mit dem Kunden sprechen? Auch kein Problem: Du kannst Whatsapp-Anrufe tätigen und dabei entscheiden ob es ein normaler Anruf oder ein Videoanruf sein soll. Wir empfehlen dir <strong>Videoanrufe</strong> um dem Kunden z.B. das Angebot in  deinem Geschäft direkt zu zeigen. Am besten vollendest du dein Whatsapp Profil mit einem schönen Foto deines Geschäfts oder deines Logos damit die Kunden sofort erkennen mit wem sie in Kontakt sind. Die Vorteile sind hier natürlich, dass es kostenlos ist und du lediglich eine stabile Internetverbindung brauchst um kontaktiert zu werden.',
-                        'Nebst Whatsapp gibt es auch weitere Optionen um deine Kunden mittels Videochat zu beraten. Zum Beispiel bietet hier <strong>Zoom</strong> oder auch <strong>FaceTime</strong> eine tolle Möglichkeit, um mit den Kunden via Video in Echtzeit zu sprechen und auf ihre Bedürfnisse und Fragen einzugehen.',
-                        '<strong>Zusatztipp</strong>: Nachdem du die ersten Beratungstermine mit den Kunden vereinbart hast, empfehlen wir dir die Einrichtung eines Terminkalenders damit du die Übersicht über deine Beratungstermine nicht verlierst (z.B. mit Calendly).'
+                        'Mit Whatsapp bist du in Echtzeit für deine Kunden erreichbar und kannst super einfach Fotos und Videos austauschen. Du willst direkt mit dem Kunden sprechen? Auch kein Problem: Du kannst Whatsapp-Anrufe tätigen und dabei entscheiden ob es ein normaler Anruf oder ein Videoanruf sein soll. Wir empfehlen dir Videoanrufe um dem Kunden z.B. das Angebot in  deinem Geschäft direkt zu zeigen. Am besten vollendest du dein Whatsapp Profil mit einem schönen Foto deines Geschäfts oder deines Logos damit die Kunden sofort erkennen mit wem sie in Kontakt sind. Die Vorteile sind hier natürlich, dass es kostenlos ist und du lediglich eine stabile Internetverbindung brauchst um kontaktiert zu werden.',
+                        'Nebst Whatsapp gibt es auch weitere Optionen um deine Kunden mittels Videochat zu beraten. Zum Beispiel bietet hier Zoom oder auch FaceTime eine tolle Möglichkeit, um mit den Kunden via Video in Echtzeit zu sprechen und auf ihre Bedürfnisse und Fragen einzugehen.',
+                        'Zusatztipp: Nachdem du die ersten Beratungstermine mit den Kunden vereinbart hast, empfehlen wir dir die Einrichtung eines Terminkalenders damit du die Übersicht über deine Beratungstermine nicht verlierst (z.B. mit Calendly).'
                     ]}
                     img={"/img/illus/illu-whatever.svg"}
                     
