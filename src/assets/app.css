@@ -312,7 +312,7 @@ p {
 }
 
 .content-secation.content-secation-hero {
-  @apply  bg-emma-yellow-400 flex-row-reverse items-center justify-between mb-0;
+  @apply  bg-emma-yellow-400 flex-row-reverse items-center justify-between mb-0 mt-8;
 }
 
 .content-secation h2 {
