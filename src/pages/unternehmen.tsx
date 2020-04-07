@@ -38,9 +38,7 @@ export default () => (
 
         </section>
 
-
-
-        <section className="bg-emma-blue-400 pt-16">
+        <section className="bg-emma-blue-400 lg:pt-16">
             <div className="container emma-container content-page">
                 <div className="content-secation">
                     <svg width="359" height="280" viewBox="0 0 359 280" fill="none" xmlns="http://www.w3.org/2000/svg">
