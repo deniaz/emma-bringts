@@ -315,7 +315,7 @@ p {
 }
 
 .content-secation.content-secation-hero {
-  @apply  bg-emma-yellow-400 flex-row-reverse items-center justify-between mb-0 mt-8;
+  @apply  bg-emma-yellow-400 flex-row-reverse items-center justify-between mb-0 mt-8 shadow-2xl overflow-scroll;
 }
 
 .content-secation h2 {
@@ -326,9 +326,7 @@ p {
 }
 
 
-
 @screen lg {
-
 
   /*****
     *
@@ -339,6 +337,7 @@ p {
   .content-secation {
     @apply p-12 flex mb-8 rounded-lg;
   }
+
   .content-secation h2 {
     @apply mt-24 mb-8 text-4xl;;
   }
@@ -348,6 +347,11 @@ p {
   .content-secation img {
     @apply w-1/2 pr-16;
   }
+
+  .content-secation.content-secation-hero img {
+    @apply  pl-16 pr-0;
+  }
+  
 
   /*****
     *
