@@ -11,7 +11,7 @@ export default () => (
                 <div className="content-secation content-secation-hero">
                     <img src="/img/illus/illu-coffee.svg" alt=""/>
 
-                    <div className="text">
+                    <div className="text pb-8">
                         <h1 className="h1 mb-4">Tipps für Unternehmen</h1>
                         <p className="p-lead">Für einige von euch wird diese neue Situation im Kundenumgang Herausforderungen mit sich bringen, andere hingegen wissen bereits welche Möglichkeiten es gibt, um den Kunden trotz der aussergewöhnlichen Situation ein tolles Kundenerlebnis zu bieten. Egal zu welcher Gruppe du gehörst, hier ein paar Ideen um euren Kunden und Kundinnen weiterhin die bestmögliche Erfahrung zu bieten:</p>
                     </div>

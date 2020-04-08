@@ -12,9 +12,9 @@ export default () => (
         <div className="content-secation content-secation-hero">
           <img src="/img/illus/illu-love.svg" alt="" />
 
-          <div className="text">
+          <div className="text pb-20">
             <h1 className="h1 mb-4">Helfe Emma!</h1>
-            <p className="p-lead mb-4">Hast du ein Geschäft im Kopf? <br />Dann trag es doch gleich in unser Verzeichnis ein.</p>
+            <p className="p-lead mb-4">Hast du ein Geschäft im Kopf, dass nicht auf Emma aufgelistet ist? Dann trag es doch gleich in unser Verzeichnis ein.</p>
             <Link href="/mitmachen" passHref>
               <a className="btn">Anbieter hinzufügen</a>
             </Link>

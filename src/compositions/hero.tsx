@@ -23,9 +23,9 @@ export const Hero: FC<Props> = ({ title, search, children }) => (
             Heimlieferung anbieten.
           </Lead>
         </div>
-        <div className="img">
-          <img src="/img/illus/illu-hero2.svg" alt="" />
-        </div>
+        
+          <img className="img" src="/img/illus/illu-hero2.svg" alt="" />
+        
       </div>
 
       {search}
