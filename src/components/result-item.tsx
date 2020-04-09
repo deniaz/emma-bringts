@@ -12,7 +12,7 @@ const styles = {
   title: 'mt-3 mb-4',
   categories: 'box-border flex flex-wrap mb-4 w-full',
   category:
-    'box-border bg-emma-yellow-400 py-1 px-3 relative rounded-full my-1 mr-1 text-sm font-semibold hover:shadow-xl cursor-default',
+    'box-border bg-emma-yellow-400 py-1 px-3 relative rounded-full my-1 mr-1 text-sm font-semibold  cursor-default',
   methods: 'box-border flex flex-wrap mb-4 justify-end',
   method:
     'box-border bg-gray-200 text-gray-800 py-1 px-4 relative rounded-full my-1 mr-1 text-xs font-medium cursor-default',

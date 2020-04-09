@@ -8,6 +8,10 @@
 @import url('https://fonts.googleapis.com/css?family=Nanum+Pen+Script&display=swap&text=Emma+bringts!');
 @import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
 
+textarea:focus, input:focus, button:focus{
+  outline: none;
+}
+
 body {
   @apply text-gray-900;
 }
@@ -28,6 +32,10 @@ a {
   @apply text-emma-purple-800;
 }
 
+
+p {
+  @apply pb-4;
+}
 
 .label {
   @apply text-gray-800 font-semibold py-2 block;
@@ -56,7 +64,7 @@ a {
 }
 
 .navi.open {
-  @apply bg-white;
+  @apply bg-emma-blue-400 top-0 fixed max-w-full z-50;
 }
 
 .navi .logo {
@@ -65,6 +73,15 @@ a {
 
 .navi .menu-icon {
   @apply block;
+  background-image: url(/img/icon-menu.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 40px;
+  height: 40px;
+}
+
+.navi.open .menu-icon {
+  background-image: url(/img/icon-close.svg);
 }
 
 .navi .menu-icon button {
@@ -76,16 +93,17 @@ a {
 }
 
 .navi .menu {
-  @apply w-full block flex-row justify-center mt-6 hidden;
+  @apply w-full block flex-row justify-center mt-6 hidden ;
 }
 
 .navi.open .menu {
-  @apply block;
+  @apply block h-screen;
 }
 
 .navi .navi-item {
   @apply text-base text-gray-900 py-3 font-medium rounded block;
 }
+
 
 .navi .btn {
   @apply btn mt-6 block;
@@ -95,6 +113,7 @@ a {
   @apply text-purple-800;
 }
 
+
 /*****
 *
 * Hero
@@ -102,7 +121,7 @@ a {
 ****/
 
 .hero-section {
-  @apply bg-emma-yellow-500;
+  @apply bg-emma-yellow-400;
 }
 
 .hero-stage {
@@ -114,7 +133,7 @@ a {
 }
 
 .hero-stage .img {
-  @apply items-center mx-20;
+  @apply items-center;
 }
 
 .p-lead {
@@ -132,12 +151,10 @@ a {
 }
 
 .zip-search .zipcode {
-  /* @apply text-xl ml-3 text-black w-5/12; */
   @apply text-base ml-2 w-5/12;
 }
 
 .zip-search .btn {
-  /* @apply text-xl px-3 py-4 w-7/12; */
   @apply text-base px-3 py-4 w-7/12;
 }
 
@@ -248,11 +265,11 @@ a {
   }
 
   .hero-stage .text {
-    @apply w-7/12 mr-16;
+    @apply w-1/2 mr-16;
   }
 
   .hero-stage .img {
-    @apply w-5/12 ml-16;
+    @apply w-1/2;
   }
 
   /*****
@@ -295,7 +312,64 @@ a {
   }
 }
 
+
+/*****
+  *
+  * Content Secation
+  *
+  ****/
+
+.container.emma-container.content-page {
+  @apply p-0;
+}
+
+.content-secation {
+  @apply  w-full mx-auto bg-white p-4 pt-12 flex-row justify-between items-start;
+}
+
+.content-secation.content-secation-hero {
+  @apply  bg-emma-yellow-400 flex-row-reverse items-center justify-between mb-0 mt-8 overflow-scroll;
+}
+
+.content-secation h2 {
+  @apply mt-12 mb-4 text-2xl;
+}
+.content-secation img {
+  @apply w-full;
+}
+
+
 @screen lg {
+
+  /*****
+    *
+    * Content Secation
+    *
+    ****/
+
+  .content-secation {
+    @apply p-12 flex mb-8 rounded-lg;
+  }
+
+  .content-secation h2 {
+    @apply mt-24 mb-8 text-4xl;;
+  }
+  .content-secation .text {
+    @apply w-1/2;
+  }
+  .content-secation img {
+    @apply w-1/2 pr-16;
+  }
+  
+  .content-secation.content-secation-hero {
+    @apply shadow-2xl ;
+  }
+
+  .content-secation.content-secation-hero img {
+    @apply pl-16 pr-0;
+  }
+  
+
   /*****
     *
     * navi
@@ -311,7 +385,7 @@ a {
   }
 
   .navi .navi-item {
-    @apply inline px-2;
+    @apply inline px-3;
   }
 
   .navi .btn {

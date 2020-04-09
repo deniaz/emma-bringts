@@ -45,7 +45,7 @@ type Reducer<S> = (prevState: S, action: A) => S;
 const styles = {
   container: 'px-4',
   title: 'text-xl font-sans mb-6 text-indigo-900',
-  form: 'w-full lg:w-3/5 mx-auto bg-white p-4 lg:p-12 rounded-lg',
+  form: 'w-full mx-auto bg-white p-4 rounded-lg lg:p-12 lg:w-3/5',
   street: 'grid grid-cols-3 gap-4',
   zip: 'col-span-1',
   locality: 'col-span-2',

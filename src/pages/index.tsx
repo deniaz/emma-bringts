@@ -9,7 +9,7 @@ import { useStatefulSearch } from '../hooks/use-stateful-search';
 import { Stacked } from '../layout/stacked';
 
 const styles = {
-  zipContainer: 'my-20',
+  zipContainer: 'mt-4 mb-12',
   spinner: 'fill-current align-center inline-flex',
 };
 
