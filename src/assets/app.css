@@ -8,12 +8,15 @@
 @import url('https://fonts.googleapis.com/css?family=Nanum+Pen+Script&display=swap&text=Emma+bringts!');
 @import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
 
-textarea:focus, input:focus, button:focus{
+textarea:focus,
+input:focus,
+button:focus {
   outline: none;
 }
 
 body {
   @apply text-gray-900;
+  @apply bg-emma-yellow-400;
 }
 
 h1 {
@@ -31,7 +34,6 @@ h3 {
 a {
   @apply text-emma-purple-800;
 }
-
 
 p {
   @apply pb-4;
@@ -93,7 +95,7 @@ p {
 }
 
 .navi .menu {
-  @apply w-full block flex-row justify-center mt-6 hidden ;
+  @apply w-full block flex-row justify-center mt-6 hidden;
 }
 
 .navi.open .menu {
@@ -104,7 +106,6 @@ p {
   @apply text-base text-gray-900 py-3 font-medium rounded block;
 }
 
-
 .navi .btn {
   @apply btn mt-6 block;
 }
@@ -112,7 +113,6 @@ p {
 .navi .navi-item:hover {
   @apply text-purple-800;
 }
-
 
 /*****
 *
@@ -312,7 +312,6 @@ p {
   }
 }
 
-
 /*****
   *
   * Content Secation
@@ -324,11 +323,11 @@ p {
 }
 
 .content-secation {
-  @apply  w-full mx-auto bg-white p-4 pt-12 flex-row justify-between items-start;
+  @apply w-full mx-auto bg-white p-4 pt-12 flex-row justify-between items-start;
 }
 
 .content-secation.content-secation-hero {
-  @apply  bg-emma-yellow-400 flex-row-reverse items-center justify-between mb-0 mt-8 overflow-scroll;
+  @apply bg-emma-yellow-400 flex-row-reverse items-center justify-between mb-0 mt-8 overflow-scroll;
 }
 
 .content-secation h2 {
@@ -338,9 +337,7 @@ p {
   @apply w-full;
 }
 
-
 @screen lg {
-
   /*****
     *
     * Content Secation
@@ -352,7 +349,7 @@ p {
   }
 
   .content-secation h2 {
-    @apply mt-24 mb-8 text-4xl;;
+    @apply mt-24 mb-8 text-4xl;
   }
   .content-secation .text {
     @apply w-1/2;
@@ -360,15 +357,14 @@ p {
   .content-secation img {
     @apply w-1/2 pr-16;
   }
-  
+
   .content-secation.content-secation-hero {
-    @apply shadow-2xl ;
+    @apply shadow-2xl;
   }
 
   .content-secation.content-secation-hero img {
     @apply pl-16 pr-0;
   }
-  
 
   /*****
     *

@@ -1,39 +1,26 @@
-import { FC, ReactNode } from 'react';
+import { FC } from 'react';
 import { Navigation } from '../components/navigation';
 import { Display } from '../identity/typography/display';
 import { Lead } from '../identity/typography/lead';
 
-type Props = {
-  title: string;
-  search: ReactNode;
-  children: ReactNode;
-};
-
-export const Hero: FC<Props> = ({ title, search, children }) => (
+export const Hero: FC = () => (
   <div className="hero-section">
     <Navigation />
 
     <div className="container emma-container">
       <div className="hero-stage">
         <div className="text">
-          <Display>Unterstütze den lokalen Handel!</Display>
+          <Display>Emma hat geschlossen :(</Display>
 
           <Lead>
-            Finde Unternehmen, die während der ausserordentlichen Lage Ihre Produkte zum Abholen oder sogar eine
-            Heimlieferung anbieten.
+            Mit schwerem Herzen haben wir uns dazu entschlossen, dass Emma zu schliessen. Andere Projekte konnten in der
+            kurzen Zeit einen weitaus höheren Mehrwert für Unternehmen und Kunden generieren.
           </Lead>
+          <Lead>Es war uns dennoch eine Freude. Bleibt gesund!</Lead>
         </div>
-        
-          <img className="img" src="/img/illus/illu-hero2.svg" alt="" />
-        
+
+        <img className="img" src="/img/illus/illu-hero2.svg" alt="" />
       </div>
-
-      {search}
-
-      <h2 className="text-center text-3xl font-semibold">{title}</h2>
-    </div>
-    <div className="container category-outer">
-      <div className="category-container">{children}</div>
     </div>
   </div>
 );

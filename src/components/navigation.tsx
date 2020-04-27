@@ -19,18 +19,11 @@ export const Navigation: FC = () => {
       </Link>
       <button className="menu-icon" onClick={handleClick}></button>
       <div className="menu">
-        <Link href="/initiative" passHref>
-          <a className="navi-item">Helft Emma</a>
-        </Link>
-
         <Link href="/unternehmen" passHref>
           <a className="navi-item">Für Unternehmen</a>
         </Link>
         <Link href="/kontakt" passHref>
           <a className="navi-item">Kontakt</a>
-        </Link>
-        <Link href="/mitmachen" passHref>
-          <a className="btn">Anbieter hinzufügen</a>
         </Link>
       </div>
     </nav>
