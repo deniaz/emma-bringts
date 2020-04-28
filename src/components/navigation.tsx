@@ -14,7 +14,7 @@ export const Navigation: FC = () => {
     <nav id="menuicon" className={classname(['container', 'emma-container', 'navi', menu ? 'open' : 'close'])}>
       <Link href="/" passHref>
         <a className="logo">
-          <img src="/img/logo-black.svg" alt="Workcation" />
+          <img src="/img/logo-close.svg" alt="Workcation" />
         </a>
       </Link>
       <button className="menu-icon" onClick={handleClick}></button>

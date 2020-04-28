@@ -13,14 +13,16 @@ export const Hero: FC = () => (
           <Display>Emma hat geschlossen :(</Display>
 
           <Lead>
-            Mit schwerem Herzen haben wir uns dazu entschlossen, dass Emma zu schliessen. Andere Projekte konnten in der
-            kurzen Zeit einen weitaus höheren Mehrwert für Unternehmen und Kunden generieren.
+            Mit schwerem Herzen haben wir uns dazu entschlossen, Emma zu schliessen. Andere Projekte konnten in der kurzen
+            Zeit einen weitaus höheren Mehrwert für Unternehmen und Kunden generieren.
           </Lead>
           <Lead>Es war uns dennoch eine Freude. Bleibt gesund!</Lead>
         </div>
 
         <img className="img" src="/img/illus/illu-hero2.svg" alt="" />
       </div>
+
+      <h2 className="text-center text-3xl font-semibold">Andere Projekte</h2>
     </div>
   </div>
 );
