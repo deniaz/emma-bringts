@@ -19,8 +19,5 @@ export const Stacked: FC<Props> = ({ children, title }) => (
     </Head>
 
     <main>{children}</main>
-    <div className="bg-emma-blue-400">
-      <div className="container emma-container pb-24"></div>
-    </div>
   </div>
 );
